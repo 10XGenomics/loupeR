@@ -1,0 +1,87 @@
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git Tag/Release that we are uploading to'
+        required: true
+
+name: release
+
+permissions:
+  contents: write
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      matrix:
+        config:
+          - {os: macos-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: false
+
+      - name: Configure gh for auth
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh auth setup-git
+
+      - name: Create Exec directory
+        shell: bash
+        run: mkdir exec
+
+      # Copy Louper binaries to the `exec` directory
+      - name: Copy Louper binary to Exec directory (Windows)
+        if: ${{ contains(matrix.config.os, 'windows') }}
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh release download ${{ github.event.inputs.tag }} -p 'louper-windows*' -O exec/louper.exe
+      - name: Copy Louper binary to Exec directory (Linux)
+        if: ${{ contains(matrix.config.os, 'ubuntu') }}
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh release download ${{ github.event.inputs.tag }} -p 'louper-linux*' -O exec/louper
+      - name: Copy Louper binary to Exec directory (MacOS)
+        if: ${{ contains(matrix.config.os, 'macos') }}
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh release download ${{ github.event.inputs.tag }} -p 'louper-macos*' -O exec/louper
+
+      - name: Build R source build
+        shell: bash
+        run: R CMD build .
+
+      - name: Rename source build
+        shell: bash
+        run: mv loupeR*tar.gz loupeR_${{ runner.os }}.tar.gz
+
+      - name: Upload build to release
+        run: gh release upload ${{ github.event.inputs.tag }} loupeR_${{ runner.os }}.tar.gz
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}

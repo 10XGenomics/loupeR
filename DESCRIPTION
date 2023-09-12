@@ -1,0 +1,22 @@
+Package: loupeR
+Title: Converts Seurat objects to 10x Genomics Loupe files
+Version: 1.0.0
+Authors@R: 
+    person(given = "Eric",
+           family = "Siegel",
+           email = "eric.siegel@10xgenomics.com",
+           role = c("aut", "cre"))
+Description: Converts Seurat objects to 10x Genomics Loupe files.
+    This is a second line to make the package checker not complain.
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3.9000
+Suggests: 
+    testthat (>= 3.0.0),
+    Matrix
+Config/testthat/edition: 3
+Imports:
+    methods,
+    Seurat,
+    hdf5r
