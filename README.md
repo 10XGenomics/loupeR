@@ -13,6 +13,8 @@
   <a href="#troubleshooting">Troubleshooting</a>
 </p>
 
+`loupeR` creates a 10x Genomics Loupe file from a Seurat object. 10x Genomics Loupe Browser can visualize single-cell and spatial data from 10x Genomics.  *Only single-cell gene expression datasets are supported*.
+
 ## How to Use
 
 Converting a Seurat object to a Loupe file is as simple as the following:
@@ -53,19 +55,17 @@ Before using `loupeR`, make sure that your system has installed [HDF5](https://w
 
 ### Installing loupeR from prebuilt bundle
 
-Go to the github [releases page](https://github.com/10XGenomics/loupeR/releases), find the version that you want, and download the platform specific `loupeR_PLATFORM.tar.gz`.   For example, on macOS, the filename would be `loupeR_macOS.tar.gz`.
-
-Now in RStudio, or your R shell, run the following to install this package.
+In RStudio, or your R shell, run the following to install this package.
 
 ```r
-install.packages(PATH_TO_TAR_GZ, repos = NULL, type ='source')
-```
+# install dependencies
+if (!require("hdf5r")) install.packages("hdf5r")
+if (!require("Seurat")) install.packages("Seurat")
 
-If this fails, complaining about missing dependencies, you must manually install those as well first by running the following.
-
-``` r
-install.packages("hdf5r")
-install.packages("Seurat")
+# install platform specific source package
+os <- sub("Darwin", "macOS", Sys.info()["sysname"])
+url <- paste0("https://github.com/10XGenomics/loupeR/releases/latest/download/loupeR_", os, ".tar.gz")
+install.packages(url, repos = NULL, type = "source")
 ```
 
 ### Installing loupeR using the `remotes` package

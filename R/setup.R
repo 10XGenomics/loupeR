@@ -23,13 +23,13 @@ needs_setup <- function(executable_path = NULL) {
   needs_executable <- is.null(executable_path) && is.null(find_executable())
 
   if (needs_eula && needs_executable) {
-    return(err("Please call `setup()` to install the Louper executable and to agree to the EULA before continuing"))
+    return(err("Please call `loupeR::setup()` to install the Louper executable and to agree to the EULA before continuing"))
   }
   if (needs_eula) {
-    return(err("Please call `setup()` to agree to the EULA before continuing"))
+    return(err("Please call `loupeR::setup()` to agree to the EULA before continuing"))
   }
   if (needs_executable) {
-    return(err("Please call `setup()` to install the Louper executable"))
+    return(err("Please call `loupeR::setup()` to install the Louper executable"))
   }
 
   SUCCESS
