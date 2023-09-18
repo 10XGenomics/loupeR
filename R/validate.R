@@ -104,6 +104,9 @@ validate_clusters <- function(clusters, barcode_count) {
   if (any(sapply(clusters, length) != barcode_count)) {
     return(err("cluster must have the same length as the number of barcodes"))
   }
+  if (any(sapply(clusters, nlevels) > 32768)) {
+    return(err("cluster cannot have more than 32768 groupings"))
+  }
 
   SUCCESS
 }

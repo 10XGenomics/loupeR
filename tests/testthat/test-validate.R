@@ -94,6 +94,12 @@ test_that("validate clusters", {
   expect_false(resp$success)
   expect_match(resp$msg, "same length as the number of barcodes")
 
+  # too many groupings
+  factors <- list("f1" = factor(seq(32769)))
+  resp <- validate_clusters(factors, length(factors[[1]]))
+  expect_false(resp$success)
+  expect_match(resp$msg, "cluster cannot have more than")
+
   # good
   factors <- list("f1" = factor(c("one", "two", "three")))
   resp <- validate_clusters(factors, 3)
