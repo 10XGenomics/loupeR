@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="tools/doc/logo.svg" width="50%" alt="loupeR - convert Seurat objects to Loupe files"><br>
+  <img src="misc/assets/logo.svg" width="50%" alt="loupeR - convert Seurat objects to Loupe files"><br>
   <a href="https://github.com/10XGenomics/loupeR/actions?query=workflow%3Acheck"><img src="https://github.com/10XGenomics/loupeR/actions/workflows/check.yml/badge.svg" alt="Build Status"></a>
   <a href="https://github.com/10XGenomics/loupeR/releases/latest"><img src="https://img.shields.io/badge/latest_release-green" alt="Build Status"></a>
   <a href="https://10xgen.com/EULA"><img src="https://img.shields.io/badge/EULA-purple" alt="EULA"></a>
