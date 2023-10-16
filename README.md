@@ -8,8 +8,9 @@
 </p>
 
 <p align="center">
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#installation">Installation</a> • 
+  <a href="#how-to-use">How To Use</a>
+  <a href="#installation">Installation</a>
+  <a href="#tutorials">Tutorials</a>
   <a href="#troubleshooting">Troubleshooting</a>
 </p>
 
@@ -76,6 +77,10 @@ Another installation option is to use the `remotes` package to directly install 
 remotes::install_github("10XGenomics/loupeR")
 loupeR::setup()
 ```
+## Tutorials
+
+* [Notebook](misc/tutorials/5k_mouse_brain.ipynb) with an example dataset can be run from this notebook here: 
+
 
 ## Troubleshooting
 
@@ -90,7 +95,3 @@ library("loupeR")
 # print extra debug information
 create_bugreport_from_seurat(seurat_obj)
 ```
-
-## Tutorials
-
-An [interactive script]() with an example dataset can be run from this notebook here: 
