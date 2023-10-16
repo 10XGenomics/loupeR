@@ -8,8 +8,9 @@
 </p>
 
 <p align="center">
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#installation">Installation</a> • 
+  <a href="#how-to-use">How To Use</a>
+  <a href="#installation">Installation</a>
+  <a href="#tutorials">Tutorials</a>
   <a href="#troubleshooting">Troubleshooting</a>
 </p>
 
@@ -27,7 +28,7 @@ library("loupeR")
 create_loupe_from_seurat(seurat_obj)
 ```
 
-Use the function `create_loupe` if you need more control in the clusters and projetions that included in the Loupe file.
+Use the function `create_loupe` if you need more control in the clusters and projections that included in the Loupe file.
 
 ```R
 # import the library
@@ -76,6 +77,10 @@ Another installation option is to use the `remotes` package to directly install 
 remotes::install_github("10XGenomics/loupeR")
 loupeR::setup()
 ```
+## Tutorials
+
+* [Data demo notebook](misc/tutorials/5k_mouse_brain.ipynb) interactive script with basic processing of an example 10x dataset
+
 
 ## Troubleshooting
 
