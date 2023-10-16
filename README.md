@@ -28,7 +28,7 @@ library("loupeR")
 create_loupe_from_seurat(seurat_obj)
 ```
 
-Use the function `create_loupe` if you need more control in the clusters and projetions that included in the Loupe file.
+Use the function `create_loupe` if you need more control in the clusters and projections that included in the Loupe file.
 
 ```R
 # import the library
