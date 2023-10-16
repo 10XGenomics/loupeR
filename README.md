@@ -79,7 +79,7 @@ loupeR::setup()
 ```
 ## Tutorials
 
-* [Notebook](misc/tutorials/5k_mouse_brain.ipynb) with an example dataset can be run from this notebook here: 
+* [Data demo notebook](misc/tutorials/5k_mouse_brain.ipynb) interactive script with basic processing of an example 10x dataset
 
 
 ## Troubleshooting
