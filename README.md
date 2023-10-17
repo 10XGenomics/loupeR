@@ -79,7 +79,7 @@ loupeR::setup()
 ```
 ## Tutorials
 
-* [Data demo notebook](misc/tutorials/5k_mouse_brain.ipynb) interactive script with basic processing of an example 10x dataset
+* [Demo notebook](https://colab.research.google.com/github/10XGenomics/loupeR/blob/main/misc/tutorials/5k_mouse_brain.ipynb) with basic processing of an example 10x dataset [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/10XGenomics/loupeR/blob/main/misc/tutorials/5k_mouse_brain.ipynb)
 
 
 ## Troubleshooting
