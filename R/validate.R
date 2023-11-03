@@ -1,6 +1,7 @@
 #' Validate the seurat count matrix
 #'
 #' @param count_mat A sparse dgCMatrix
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #'
 #' @return A list with two elements:
 #' \itemize{
@@ -11,7 +12,7 @@
 #' @importFrom methods is
 #'
 #' @export
-validate_count_mat <- function(count_mat) {
+validate_count_mat <- function(count_mat, feature_ids = NULL) {
   if (!is(count_mat, "dgCMatrix")) {
     return(err("count_mat must be a dgCMatrix"))
   }
@@ -37,6 +38,12 @@ validate_count_mat <- function(count_mat) {
   if (any(is.infinite(count_mat@x))) {
     return(err("matrix values must not be infinite"))
   }
+  if (!all(sapply(barcodes, nzchar))) {
+    return(err("barcodes cannot be the empty string"))
+  }
+  if (!all(sapply(features, nzchar))) {
+    return(err("features cannot be the empty string"))
+  }
 
   barcodes <- sanitize_barcodes(barcodes)
 
@@ -52,6 +59,19 @@ validate_count_mat <- function(count_mat) {
 
   if (length(unique(barcodes)) != length(barcodes)) {
     return(err("all barcodes should be unique"))
+  }
+
+  # validate feature ids
+  if (!is.null(feature_ids)) {
+    if (length(feature_ids) != length(features)) {
+      return(err("must supply a feature id for each feature name"))
+    }
+    if (length(unique(feature_ids)) != length(feature_ids)) {
+      return(err("all feature ids should be unique"))
+    }
+    if (!all(sapply(feature_ids, nzchar))) {
+      return(err("feature ids cannot be the empty string"))
+    }
   }
 
   SUCCESS

@@ -7,7 +7,8 @@ test_that("can create hdf5", {
   h5path <- sprintf("%s.h5", tempfile())
 
   seurat_obj_version <- "1.2.3"
-  create_hdf5(count_mat, clusters, projections, h5path, seurat_obj_version)
+  feature_ids <- NULL
+  create_hdf5(count_mat, clusters, projections, h5path, feature_ids, seurat_obj_version)
 
   f <- hdf5r::h5file(h5path)
 
@@ -20,7 +21,9 @@ test_that("can create hdf5", {
 
   features_group <- hdf5r::openGroup(matrix_group, "features")
   feature_names <- hdf5r::openGroup(features_group, "name")
+  feature_ids_group <- hdf5r::openGroup(features_group, "id")
   expect_equal(hdf5r::readDataSet(feature_names), paste0("row", 1:100))
+  expect_equal(hdf5r::readDataSet(feature_ids_group), paste0("feature_", 1:100))
 
   # spot check projections
   projs_group <- hdf5r::openGroup(f, "projections")
@@ -46,4 +49,22 @@ test_that("can create hdf5", {
   loupeR_seurat_version <- hdf5r::openLocation(extra, "loupeR_seurat_version")
   val <- hdf5r::readDataSet(loupeR_seurat_version)
   expect(!is.null(hdf5r::readDataSet(loupeR_seurat_version)), "extra field is missing")
+})
+
+test_that("can create hdf5 custom feature ids", {
+  barcode_count <- 5
+  proj <- create_dense_mat(barcode_count, 2)
+  count_mat <- create_count_mat(3, barcode_count)
+  h5path <- sprintf("%s.h5", tempfile())
+  seurat_obj_version <- "1.2.3"
+  feature_ids <- c("one", "two", "three")
+
+  create_hdf5(count_mat, list(), list(), h5path, feature_ids, seurat_obj_version)
+
+  f <- hdf5r::h5file(h5path)
+
+  matrix_group <- hdf5r::openGroup(f, "matrix")
+  features_group <- hdf5r::openGroup(matrix_group, "features")
+  feature_ids_group <- hdf5r::openGroup(features_group, "id")
+  expect_equal(hdf5r::readDataSet(feature_ids_group), feature_ids)
 })

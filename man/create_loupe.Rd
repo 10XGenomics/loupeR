@@ -10,6 +10,7 @@ create_loupe(
   projections = list(),
   output_dir = NULL,
   output_name = NULL,
+  feature_ids = NULL,
   executable_path = NULL,
   force = FALSE,
   seurat_obj_version = NULL
@@ -25,6 +26,8 @@ create_loupe(
 \item{output_dir}{optional directory where the Loupe file will be written}
 
 \item{output_name}{optional name of the Loupe file with the extensions not included.}
+
+\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.}
 
 \item{executable_path}{optional path to the louper executable.}
 

@@ -45,6 +45,19 @@ test_that("validate count matrix", {
   expect_false(resp$success)
   expect_match(resp$msg, "should be unique")
 
+  # empty barcode
+  mat <- create_count_mat(3, 3)
+  colnames(mat) <- c("ACTGAA-1", "ACTGAA-1", "")
+  resp <- validate_count_mat(mat)
+  expect_false(resp$success)
+  expect_match(resp$msg, "cannot be the empty string")
+
+  # empty feature
+  mat <- create_count_mat(3, 3)
+  colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "")
+  resp <- validate_count_mat(mat)
+  expect_false(resp$success)
+
   # good
   mat <- create_count_mat(3, 3)
   colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "CTAGAA-1")
@@ -57,6 +70,34 @@ test_that("validate count matrix", {
   colnames(mat) <- barcodes
   resp <- validate_count_mat(mat)
   expect_true(resp$success)
+
+  # feature_ids good
+  mat <- create_count_mat(3, 3)
+  feature_ids <- c("one", "two", "three")
+  colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "CTAGAA-1")
+  resp <- validate_count_mat(mat, feature_ids = feature_ids)
+  expect_true(resp$success)
+
+  # feature_ids wrong size
+  mat <- create_count_mat(3, 3)
+  feature_ids <- c("one", "two")
+  colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "CTAGAA-1")
+  resp <- validate_count_mat(mat, feature_ids = feature_ids)
+  expect_false(resp$success)
+
+  # feature_ids not unique
+  mat <- create_count_mat(3, 3)
+  feature_ids <- c("one", "one", "one")
+  colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "CTAGAA-1")
+  resp <- validate_count_mat(mat, feature_ids = feature_ids)
+  expect_false(resp$success)
+
+  # feature_ids empty string
+  mat <- create_count_mat(3, 3)
+  feature_ids <- c("one", "two", "")
+  colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "CTAGAA-1")
+  resp <- validate_count_mat(mat, feature_ids = feature_ids)
+  expect_false(resp$success)
 })
 
 test_that("validate clusters", {

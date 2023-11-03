@@ -53,7 +53,7 @@ select_assay <- function(obj) {
   assay_priority <- sort(assay_priority)
 
   assay <- NULL
-  for (i in 1:length(assay_priority)) {
+  for (i in seq_along(assay_priority)) {
     name <- names(assay_priority[i])
     assay <- Seurat::GetAssay(obj, assay=name)
 
@@ -114,6 +114,23 @@ select_projections <- function(obj) {
   }
 
   projections
+}
+
+#' Read FeatureIds from 10x features.tsv.gz file
+#'
+#' @param tsv_path character vector path to the features.tsv.gz file
+#'
+#' @return A character vector of the feature ids
+#'
+#' @importFrom utils read.csv
+#'
+#' @export
+read_feature_ids_from_tsv <- function(tsv_path) {
+  tsv_path <- normalizePath(path.expand(tsv_path))
+  df <- utils::read.csv(tsv_path, sep = "\t", header = FALSE)
+  feature_ids <- df[[1]]
+
+  feature_ids
 }
 
 #' Check Clusters are identical numerically
