@@ -52,9 +52,9 @@ test_that("validate count matrix", {
   expect_false(resp$success)
   expect_match(resp$msg, "cannot be the empty string")
 
-  # empty feature
+  # empty feature names
   mat <- create_count_mat(3, 3)
-  colnames(mat) <- c("ACTGAA-1", "ACTAAA-1", "")
+  rownames(mat) <- c("feat-1", "feat-2", "")
   resp <- validate_count_mat(mat)
   expect_false(resp$success)
 

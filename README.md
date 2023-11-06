@@ -45,6 +45,21 @@ create_loupe(
 )
 ```
 
+Additionally, use the utility function `read_feature_ids_from_tsv` to read the Ensemble ids from the 10x dataset.  A Seurat object will only have imported the feature names or ids and attached these as rownames to the count matrix.  In order for the Ensemble id links to work correctly within Loupe Browser, one must manually import them and include them.
+
+```R
+# import the library
+library("loupeR")
+
+# Gene Expression RNA assay
+assay <- seurat_obj[["RNA"]]
+
+# A character vector of ensemble ids.
+feature_ids <- read_feature_ids_from_tsv("PATH_TO_10X_DATA/features.tsv.gz")
+
+create_loupe_from_seurat(seurat_obj, feature_ids = feature_ids)
+```
+
 ## Installation
 
 ### HDF5
