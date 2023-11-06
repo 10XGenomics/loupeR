@@ -4,6 +4,7 @@
 #' @param clusters list of factors that hold information for each barcode
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param h5path path to h5 file
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #' @param seurat_obj_version optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.
 #'
 #' @importFrom hdf5r H5File
@@ -16,6 +17,7 @@ create_hdf5 <- function(
   clusters,
   projections,
   h5path,
+  feature_ids,
   seurat_obj_version
 ) {
   if (file.exists(h5path)) {
@@ -25,7 +27,7 @@ create_hdf5 <- function(
   # create hdf5 file and matrix groups
   f <- hdf5r::H5File$new(h5path, mode="w")
 
-  write_mat(f, count_mat)
+  write_mat(f, count_mat, feature_ids)
   write_clusters(f, clusters)
   write_projections(f, projections)
   write_metadata(f, seurat_obj_version)
@@ -39,9 +41,10 @@ create_hdf5 <- function(
 #'
 #' @param f An open H5File
 #' @param count_mat A sparse dgCMatrix
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #'
 #' @noRd
-write_mat <- function(f, count_mat) {
+write_mat <- function(f, count_mat, feature_ids) {
   features <- rownames(count_mat)
   barcodes_unmodified <- colnames(count_mat)
   barcodes_formatted  <- sanitize_barcodes(barcodes_unmodified)
@@ -60,7 +63,9 @@ write_mat <- function(f, count_mat) {
   create_dataset(matrix_group, "shape", as.integer(c(feature_count, barcode_count)))
   matrix_group$close()
 
-  feature_ids <- lapply(1:length(features), function(x) {return(sprintf("feature_%d", x))})
+  if (is.null(feature_ids)) {
+    feature_ids <- lapply(1:length(features), function(x) {return(sprintf("feature_%d", x))})
+  }
 
   create_str_dataset(features_group, "name", features)
   create_str_dataset(features_group, "id", as.character(feature_ids)) 
@@ -98,7 +103,7 @@ print_metadata <- function(metadata, prefix="") {
 write_clusters <- function(f, clusters) {
   clusters_group <- f$create_group("clusters")
 
-  for (i in 1:length(clusters)) {
+  for (i in seq_along(clusters)) {
     name <- names(clusters[i])
     cluster <- clusters[[i]]
 
@@ -123,7 +128,7 @@ write_clusters <- function(f, clusters) {
 write_projections <- function(f, projections) {
   projections_group <- f$create_group("projections")
 
-  for (i in 1:length(projections)) {
+  for (i in seq_along(projections)) {
     name <- names(projections[i])
     projection <- projections[[i]]
 

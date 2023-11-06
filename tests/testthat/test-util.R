@@ -55,6 +55,7 @@ test_that("select_projections select reductions", {
   rna <- create_count_mat(1000, 100)
   obj <- Seurat::CreateSeuratObject(rna, assay="rna")
   obj <- suppressWarnings(Seurat::FindVariableFeatures(obj, verbose=FALSE))
+  obj <- Seurat::NormalizeData(obj, verbose=FALSE)
   obj <- Seurat::ScaleData(obj, verbose=FALSE)
   obj <- suppressWarnings(Seurat::RunPCA(obj, verbose=FALSE))
   obj <- Seurat::RunTSNE(obj, verbose=FALSE)

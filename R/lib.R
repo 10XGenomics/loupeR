@@ -8,6 +8,7 @@
 #' @param output_dir optional directory where the Loupe file will be written
 #' @param output_name optional name of the Loupe file with the extensions not included.
 #' @param dedup_clusters optional logical that will try to deduplicate all clusters that are numerically the same
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #' @param executable_path optional path to the louper executable.
 #' @param force optional logical as to whether we should overwrite an already existing file
 #'
@@ -21,6 +22,7 @@ create_loupe_from_seurat <- function(
   output_dir = NULL,
   output_name = NULL,
   dedup_clusters = FALSE,
+  feature_ids = NULL,
   executable_path = NULL,
   force = FALSE
 ) {
@@ -33,7 +35,7 @@ create_loupe_from_seurat <- function(
     stop(validation_err("input object was not a Seurat object", "Seurat Object"))
   }
 
-  logMsg("extracting matrix, clusters, and projctions")
+  logMsg("extracting matrix, clusters, and projections")
 
   namedAssay <- select_assay(obj)
   if (is.null(namedAssay)) {
@@ -61,6 +63,7 @@ create_loupe_from_seurat <- function(
     projections=projections,
     output_dir=output_dir,
     output_name=output_name,
+    feature_ids=feature_ids,
     executable_path=executable_path,
     force=force,
     seurat_obj_version=seurat_obj_version
@@ -76,6 +79,7 @@ create_loupe_from_seurat <- function(
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param output_dir optional directory where the Loupe file will be written
 #' @param output_name optional name of the Loupe file with the extensions not included.
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #' @param executable_path optional path to the louper executable.
 #' @param force optional logical as to whether we should overwrite an already existing file
 #' @param seurat_obj_version optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.
@@ -91,6 +95,7 @@ create_loupe <- function(
   projections = list(),
   output_dir = NULL,
   output_name = NULL,
+  feature_ids = NULL,
   executable_path = NULL,
   force = FALSE,
   seurat_obj_version = NULL
@@ -101,7 +106,7 @@ create_loupe <- function(
   }
 
   logMsg("validating count matrix")
-  ok <- validate_count_mat(count_mat)
+  ok <- validate_count_mat(count_mat, feature_ids = feature_ids)
   if (!ok$success) {
     stop(validation_err(ok$msg, "count matrix"))
   }
@@ -127,6 +132,7 @@ create_loupe <- function(
     clusters,
     projections,
     h5path,
+    feature_ids,
     seurat_obj_version
   )
   if (!ok$success) {

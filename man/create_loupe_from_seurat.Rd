@@ -9,6 +9,7 @@ create_loupe_from_seurat(
   output_dir = NULL,
   output_name = NULL,
   dedup_clusters = FALSE,
+  feature_ids = NULL,
   executable_path = NULL,
   force = FALSE
 )
@@ -21,6 +22,8 @@ create_loupe_from_seurat(
 \item{output_name}{optional name of the Loupe file with the extensions not included.}
 
 \item{dedup_clusters}{optional logical that will try to deduplicate all clusters that are numerically the same}
+
+\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.}
 
 \item{executable_path}{optional path to the louper executable.}
 

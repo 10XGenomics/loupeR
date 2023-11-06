@@ -4,10 +4,12 @@
 \alias{validate_count_mat}
 \title{Validate the seurat count matrix}
 \usage{
-validate_count_mat(count_mat)
+validate_count_mat(count_mat, feature_ids = NULL)
 }
 \arguments{
 \item{count_mat}{A sparse dgCMatrix}
+
+\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.}
 }
 \value{
 A list with two elements:
