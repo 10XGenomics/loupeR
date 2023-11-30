@@ -176,7 +176,7 @@ create_metadata <- function(seurat_obj_version = NULL) {
   meta <- list()
   meta["tool"]             <- "loupeR"
   meta["tool_version"]     <- as.character(utils::packageVersion("loupeR"))
-  meta["os"]               <- sinfo$running
+  meta["os"]               <- ifelse(is.null(sinfo$running), "Unknown", sinfo$running)
   meta["system"]           <- sinfo$platform
   meta["language"]         <- rversion$language
   meta["language_version"] <- language_version
