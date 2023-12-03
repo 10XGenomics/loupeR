@@ -37,9 +37,12 @@ library("loupeR")
 # Gene Expression RNA assay
 assay <- seurat_obj[["RNA"]]
 
+# get counts matrix from either the old or newer formats of assay
+counts <- counts_matrix_from_assay(assay)
+
 # convert the count matrix, clusters, and projections into a Loupe file
 create_loupe(
-    assay@counts,
+    counts,
     clusters = select_clusters(seurat_obj),
     projections = select_projections(seurat_obj)
 )
