@@ -74,15 +74,17 @@ select_assay <- function(obj) {
 #'
 #' @return A sparse counts matrix
 #'
-#' @importFrom SeuratObject LayerData
-#'
 #' @export
 counts_matrix_from_assay <- function(assay) {
-  # Support both Assay and Assay5 classes
-  # The same as using the helper `assay$counts` but less indirection.
-  # With Assay5 it is important to use this method as oppossed to grabbing
-  # the data from `assay@layers` directly as that matrix won't contain the dimnames
-  SeuratObject::LayerData(assay, "counts")
+  if (packageVersion("Seurat") >= 5) {
+    return(assay$counts)
+  } else {
+    if (is(assay, 'Assay5')) {
+      stop("Cannot get count matrix: Please upgrade to Seurat > 5 to support dataset")
+    }
+
+    return(assay@counts)
+  }
 }
 
 #' Select clusters from the assay

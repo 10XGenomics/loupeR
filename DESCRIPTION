@@ -15,9 +15,9 @@ RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0),
     Matrix,
+    SeuratObject (>= 5.0.0)
 Config/testthat/edition: 3
 Imports:
     methods,
-    Seurat (>= 5.0.0),
-    SeuratObject (>= 5.0.0),
+    Seurat,
     hdf5r
