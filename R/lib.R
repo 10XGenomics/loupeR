@@ -128,6 +128,7 @@ create_loupe <- function(
   }
 
   h5path <- sprintf("%s.h5", tempfile())
+  logMsg("creating temporary hdf5 file:", h5path)
   ok <- create_hdf5(
     count_mat,
     clusters,
@@ -140,6 +141,7 @@ create_loupe <- function(
     stop(general_err(ok$msg, "creating the temporary hdf5 file"))
   }
 
+  logMsg("invoking louper executable")
   ok <- louper_create_cloupe(
     h5path,
     output_dir=output_dir,
