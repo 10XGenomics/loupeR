@@ -56,8 +56,9 @@ select_assay <- function(obj) {
   for (i in seq_along(assay_priority)) {
     name <- names(assay_priority[i])
     assay <- Seurat::GetAssay(obj, assay=name)
+    counts <- counts_matrix_from_assay(assay)
 
-    if (length(assay@counts) > 0) {
+    if (length(counts) > 0) {
       result = list()
       result[[name]] = assay
       return(result)
@@ -65,6 +66,25 @@ select_assay <- function(obj) {
   }
 
   NULL
+}
+
+#' Extract the counts matrix from the Assay
+#'
+#' @param assay A SeuratObject::Assay or SeuratObject::Assay5
+#'
+#' @return A sparse counts matrix
+#'
+#' @export
+counts_matrix_from_assay <- function(assay) {
+  if (packageVersion("Seurat") >= 5) {
+    return(assay$counts)
+  } else {
+    if (is(assay, 'Assay5')) {
+      stop("Cannot get count matrix: Please upgrade to Seurat > 5 to support dataset")
+    }
+
+    return(assay@counts)
+  }
 }
 
 #' Select clusters from the assay

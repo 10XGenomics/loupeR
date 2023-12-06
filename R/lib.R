@@ -44,6 +44,7 @@ create_loupe_from_seurat <- function(
 
   assay_name <- names(namedAssay)
   assay <- namedAssay[[1]]
+  counts <- counts_matrix_from_assay(assay)
 
   clusters <- select_clusters(obj, dedup=dedup_clusters)
   projections <- select_projections(obj)
@@ -58,7 +59,7 @@ create_loupe_from_seurat <- function(
   }
 
   success <- create_loupe(
-    assay@counts,
+    counts,
     clusters=clusters,
     projections=projections,
     output_dir=output_dir,

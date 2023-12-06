@@ -60,9 +60,10 @@ create_bugreport_from_seurat <- function(obj) {
   assay <- namedAssay[[1]]
   clusters <- select_clusters(obj)
   projections <- select_projections(obj)
+  counts <- counts_matrix_from_assay(assay)
 
   create_bugreport(
-    assay@counts,
+    counts,
     clusters,
     projections,
     assay_name = assay_name,
