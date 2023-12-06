@@ -54,6 +54,9 @@ louper_create_cloupe <- function(
     return(err(sprintf("cannot find Louper executable at path: '%s'", executable_path)))
   }
 
+  cmd_msg <- sprintf('running command: "%s"', paste(c(executable_path, args), collapse=" "))
+  logMsg(cmd_msg)
+
   status <- system2(command=executable_path, args=args)
 
   if (status == 0) {
