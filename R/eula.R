@@ -18,10 +18,16 @@ eula <- function() {
     return(FALSE)
   }
 
-  dir.create(eula_data_dir(), showWarnings=FALSE, recursive = TRUE)
-  file.create(eula_lock_file())
+  eula_create()
 
   invisible(TRUE)
+}
+
+#' Create Eula lock file
+#' @noRd
+eula_create <- function() {
+  dir.create(eula_data_dir(), showWarnings=FALSE, recursive = TRUE)
+  file.create(eula_lock_file())
 }
 
 #' Reset Eula by removing lock file
