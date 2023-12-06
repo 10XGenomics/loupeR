@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "-----------RUNNING MOCK LOUPER EXECUTABLE--------------"
+echo Arguments passed to the script: "$@"
+echo "-------------------------------------------------------"
