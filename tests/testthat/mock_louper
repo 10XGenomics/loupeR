@@ -1,5 +1,59 @@
 #!/usr/bin/env bash
 
 echo "-----------RUNNING MOCK LOUPER EXECUTABLE--------------"
-echo Arguments passed to the script: "$@"
+
+# Default values
+force=false
+
+# Check if the correct number of arguments is provided
+if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
+    echo "Usage: $0 create --input=SOME_PATH --output=SOME_PATH [--force]"
+    exit 1
+fi
+
+# Check if the first argument is "create"
+if [ "$1" != "create" ]; then
+    echo "Error: First argument must be 'create'"
+    exit 1
+fi
+
+# shift args
+shift
+
+# Parse and validate the input and output options
+input=""
+output=""
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --input=*)
+            input="${1#*=}"
+            ;;
+        --output=*)
+            output="${1#*=}"
+            ;;
+        --force)
+            force=true
+            ;;
+        *)
+            echo "Error: Unknown option '$1'"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# Check if input and output paths are provided
+if [ -z "$input" ] || [ -z "$output" ]; then
+    echo "Error: Both --input and --output options must be provided"
+    exit 1
+fi
+
+# Additional processing with the arguments can be added here
+
+echo "Action: create"
+echo "Input path: $input"
+echo "Output path: $output"
+echo "Force: $force"
+
 echo "-------------------------------------------------------"
