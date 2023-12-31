@@ -29,8 +29,8 @@ louper_create_cloupe <- function(
   h5path <- normalizePath(path.expand(h5path))
   loupe_path <- suppressWarnings(normalizePath(path.expand(loupe_path)))
 
-  input_flag <- sprintf("--input=%s", h5path)
-  output_flag <- sprintf("--output=%s", loupe_path)
+  input_flag <- sprintf("--input=%s", shQuote(h5path))
+  output_flag <- sprintf("--output=%s", shQuote(loupe_path))
   args <- c("create", input_flag, output_flag)
 
   if (file.exists(loupe_path) && !force) {
