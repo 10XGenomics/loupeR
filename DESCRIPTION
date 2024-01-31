@@ -10,6 +10,8 @@ Description: Converts Seurat objects to 10x Genomics Loupe files.
     This is a second line to make the package checker not complain.
 License: file LICENSE
 Encoding: UTF-8
+Depends:
+    R (>= 4.0.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
