@@ -127,6 +127,15 @@ validate_clusters <- function(clusters, barcode_count) {
   if (any(sapply(clusters, nlevels) > 32768)) {
     return(err("cluster cannot have more than 32768 groupings"))
   }
+  if (any(sapply(clusters, nlevels) == 0)) {
+    return(err("cluster must have at least one grouping"))
+  }
+  for (clusterIdx in seq_along(clusters)) {
+    l <- levels(clusters[[clusterIdx]])
+    if (!all(sapply(l, nchar))) {
+      return(err("cluster group names cannot be the empty string"))
+    }
+  }
 
   SUCCESS
 }

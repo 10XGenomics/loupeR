@@ -112,6 +112,16 @@ select_clusters <- function(obj, dedup=FALSE) {
     }
   }
 
+  # remove clusters that are missing factor levels or have a single empty level name
+  good_clusters <- sapply(clusters, function(f) {
+    if (length(levels(f)) == 0) {
+      return(FALSE)
+    }
+    max(as.numeric(lapply(levels(f), nchar))) > 0
+  })
+
+  clusters <- clusters[good_clusters]
+
   if (dedup) deduplicate_clusters(clusters) else clusters
 }
 
