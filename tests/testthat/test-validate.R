@@ -141,6 +141,18 @@ test_that("validate clusters", {
   expect_false(resp$success)
   expect_match(resp$msg, "cluster cannot have more than")
 
+  # cluster with zero levels
+  factors <- list("f1" = factor(seq(32769), levels = c()))
+  resp <- validate_clusters(factors, length(factors[[1]]))
+  expect_false(resp$success)
+  expect_match(resp$msg, "cluster must have at least one grouping")
+
+  # cluster with one level, but it's empty
+  factors <- list("f1" = factor(seq(32769), levels = c("")))
+  resp <- validate_clusters(factors, length(factors[[1]]))
+  expect_false(resp$success)
+  expect_match(resp$msg, "cluster group names cannot be the empty string")
+
   # good
   factors <- list("f1" = factor(c("one", "two", "three")))
   resp <- validate_clusters(factors, 3)
