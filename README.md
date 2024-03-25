@@ -8,9 +8,15 @@
 </p>
 
 <p align="center">
+  ●
   <a href="#how-to-use">How To Use</a>
+  ●
   <a href="#installation">Installation</a>
+  ●
   <a href="#tutorials">Tutorials</a>
+  ●
+  <a href="#loupe-browser-compatibility">Loupe Browser Compatibility</a>
+  ●
   <a href="#troubleshooting">Troubleshooting</a>
 </p>
 
@@ -95,6 +101,16 @@ Another installation option is to use the `remotes` package to directly install 
 remotes::install_github("10XGenomics/loupeR")
 loupeR::setup()
 ```
+
+## Loupe Browser Compatibility
+
+With new versions of the Loupe Browser, new version of LoupeR need to be released. The table below shows version requirements between the two.
+
+| LoupeR Version | Loupe Browser Version |
+| -------------  | -------------         |
+| v1.0.x         | Loupe Browser >= 7.0  |
+| v1.1.x         | Loupe Browser >= 8.0  |
+
 ## Tutorials
 
 * [Demo notebook](https://colab.research.google.com/github/10XGenomics/loupeR/blob/main/misc/tutorials/5k_mouse_brain.ipynb) with basic processing of an example 10x dataset [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/10XGenomics/loupeR/blob/main/misc/tutorials/5k_mouse_brain.ipynb)
