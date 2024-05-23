@@ -76,7 +76,7 @@ select_assay <- function(obj) {
 #'
 #' @export
 counts_matrix_from_assay <- function(assay) {
-  if (packageVersion("Seurat") >= 5) {
+  if (packageVersion("Seurat") >= package_version("5.0.0")) {
     return(assay$counts)
   } else {
     if (is(assay, 'Assay5')) {
