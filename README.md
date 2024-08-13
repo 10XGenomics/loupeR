@@ -102,6 +102,10 @@ remotes::install_github("10XGenomics/loupeR")
 loupeR::setup()
 ```
 
+### Automated installation and execution
+
+If you are interested in automating LoupeR installation and execution (and are blocked by interactive license acceptance), please write to [support@10xgenomics.com](mailto:support@10xgenomics.com) for further assistance.
+
 ## Loupe Browser Compatibility
 
 With new versions of the Loupe Browser, new version of LoupeR need to be released. The table below shows version requirements between the two.
