@@ -45,13 +45,12 @@ validate_count_mat <- function(count_mat, feature_ids = NULL) {
     return(err("features cannot be the empty string"))
   }
 
-  barcodes <- sanitize_barcodes(barcodes)
-
-  if (!are_barcodes_valid(barcodes)) {
+  resp <- validate_barcodes(barcodes)
+  if (!resp$success) {
     barcode_msg <- paste(
-      'There is an issue with the formatting of your barcodes.',
-      'Barcodes should begin with base pairs and end with an optional hyphen and suffix.',
-      'For further information, please see the documentation: 10xgen.com/louper'
+      'There is an issue with the formatting of your barcodes:',
+      resp$msg,
+      'Please see the readme at github.com/10xGenomics/loupeR'
     )
 
     return(err(barcode_msg))
@@ -81,12 +80,33 @@ validate_count_mat <- function(count_mat, feature_ids = NULL) {
 #'
 #' @param barcodes a character vector
 #'
-#' @return A boolean true or false
+#' @return A list with two elements:
+#' \itemize{
+#'   \item success: a logical value indicating success (TRUE) or failure (FALSE)
+#'   \item msg: an optional error message (NULL if success is TRUE)
+#' }
 #'
-#' @noRd
-are_barcodes_valid <- function(barcodes) {
-  pattern <-"^([ACTG]{6,})(-.*?)?$" 
-  return(all(grepl(pattern, barcodes)))
+#' @importFrom methods is
+#'
+#' @export
+validate_barcodes <- function(barcodes) {
+  barcodeRegex <- "^(.*[:_])?([ACGT]{14,})([:_].*)?$"
+  barcodeGemRegex <- "^(.*[:_])?([ACGT]{14,})-(\\d+)([:_].*)?$"
+  visiumHDRegex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})([:_].*)?$"
+  visiumHDGemRegex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})-(\\d+)([:_].*)?$"
+  xeniumCellIdRegex <- "^(.*[:_])?([a-p]{1,8})-(\\d+)([:_].*)?$"
+
+  for (barcode in barcodes) {
+    if (!grepl(barcodeRegex, barcode) &&
+      !grepl(barcodeGemRegex, barcode) &&
+      !grepl(visiumHDRegex, barcode) &&
+      !grepl(visiumHDGemRegex, barcode) &&
+      !grepl(xeniumCellIdRegex, barcode)) {
+        return(err(paste("Invalid barcode:", barcode)))
+    }
+  }
+  
+  SUCCESS
 }
 
 #' Validate the seurat clusters

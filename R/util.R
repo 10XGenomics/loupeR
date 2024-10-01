@@ -250,65 +250,6 @@ cluster_levels_word_like <- function(cluster) {
   })
 }
 
-#' Sanitize barcodes into expected format
-#'
-#' @param barcodes character vector of barcodes names
-#'
-#' @importFrom utils strcapture
-#'
-#' @return character vector of sanitized barcode names
-#'
-#' @noRd
-sanitize_barcodes <- function(barcodes) {
-  if (are_barcodes_valid(barcodes)) {
-    return(barcodes)
-  }
-
-  # Some examples that we have seen
-  #
-  # Seurat Integrate will add a prefix to the barcode "12U_ACTGACTGACTG-1"
-  # Other users tend to add a prefix "SOMEPREFIX:ACTGACTGACTG"
-  pattern <-"^(.*?)(_|-|:)?([ACTG]{6,})(-\\d+)?(_|-|:)?(.*?)$" 
-
-  # only santize barcodes if all match the pattern
-  if (length(grep(pattern, barcodes)) != length(barcodes)) {
-    return(barcodes)
-  }
-
-  # capture subgroups of pattern (prefix, barcode, suffix)
-  # NOTE: need to use perl regexs to support non-greedy matching
-  groups <- strcapture(
-    pattern=pattern,
-    x=barcodes,
-    perl=TRUE,
-    proto=list(prefix = character(),
-               sep1 = character(),
-               barcode = character(),
-               barcodeDashNum = character(),
-               sep2 = character(),
-               suffix = character()))
-
-  # rewrite barcodes "BARCODE-PREFIX-SUFFIX"
-  updated_barcodes <- character(length(barcodes))
-  for (i in 1:nrow(groups)) {
-    row <- groups[i,]
-
-    prefix <- ""
-    if (nchar(row$prefix) > 0) {
-      prefix <- sprintf("-%s", row$prefix)
-    }
-
-    suffix <- ""
-    if (nchar(row$suffix) > 0) {
-      suffix <- sprintf("-%s", row$suffix)
-    }
-
-    updated_barcodes[[i]] = sprintf("%s%s%s%s", row$barcode, row$barcodeDashNum, prefix, suffix)
-  }
-
-  updated_barcodes
-}
-
 #' Gets the systems OS.
 #'
 #' @return "windows", "mac", "unix"

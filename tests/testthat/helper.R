@@ -1,5 +1,5 @@
 #' Create random barcode
-random_barcode <- function(size = 10) {
+random_barcode <- function(size = 14) {
   paste0(sample(c("A", "C", "T", "G"), size, replace=TRUE), collapse="")
 }
 
@@ -17,7 +17,7 @@ create_count_mat <- function(rows, cols, valid_barcodes = FALSE) {
   colnames <- as.character()
   if (cols > 0) {
     if (valid_barcodes) {
-      colnames <- lapply(rep(10, cols), random_barcode)
+      colnames <- lapply(rep(14, cols), random_barcode)
     } else {
       colnames <- paste0("col", 1:cols)
     }
