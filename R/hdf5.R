@@ -46,17 +46,15 @@ create_hdf5 <- function(
 #' @noRd
 write_mat <- function(f, count_mat, feature_ids) {
   features <- rownames(count_mat)
-  barcodes_unmodified <- colnames(count_mat)
-  barcodes_formatted  <- sanitize_barcodes(barcodes_unmodified)
+  barcodes <- colnames(count_mat)
   feature_count <- length(features)
-  barcode_count <- length(barcodes_formatted )
+  barcode_count <- length(barcodes)
 
   # create groups
   matrix_group <- f$create_group("matrix")
   features_group <- matrix_group$create_group("features")
 
-  create_str_dataset(matrix_group, "barcodes", barcodes_formatted )
-  create_str_dataset(matrix_group, "barcodes_unmodified", barcodes_unmodified)
+  create_str_dataset(matrix_group, "barcodes", barcodes)
   create_dataset(matrix_group, "data", as.integer(count_mat@x))
   create_dataset(matrix_group, "indices", as.integer(count_mat@i))
   create_dataset(matrix_group, "indptr", as.integer(count_mat@p))
