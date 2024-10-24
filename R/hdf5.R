@@ -130,6 +130,11 @@ write_projections <- function(f, projections) {
     name <- names(projections[i])
     projection <- projections[[i]]
 
+    # cast to double as this is required during Loupe validation
+    if (!is.double(projection)) {
+      projection <- as.double(projection)
+    }
+
     is_umap <- grepl("umap", name, ignore.case = TRUE)
     is_tsne <- grepl("tsne", name, ignore.case = TRUE)
     is_tsne_dash <- grepl("t-sne", name, ignore.case = TRUE)
@@ -145,6 +150,7 @@ write_projections <- function(f, projections) {
     create_str_dataset(group, "name", name)
     create_str_dataset(group, "method", method)
     create_dataset(group, "data", projection)
+
     group$close()
   }
 

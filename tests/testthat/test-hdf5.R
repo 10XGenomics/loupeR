@@ -28,8 +28,8 @@ test_that("can create hdf5", {
   # spot check projections
   projs_group <- hdf5r::openGroup(f, "projections")
   proj_group <- hdf5r::openGroup(projs_group, "p1")
-  proj_data <- hdf5r::openLocation(proj_group, "data")
-  expect_equal(proj, hdf5r::readDataSet(proj_data))
+  proj_dataset <- hdf5r::openLocation(proj_group, "data")
+  expect_equal(proj, hdf5r::readDataSet(proj_dataset))
 
   # spot check clusters
   clusters_group <- hdf5r::openGroup(f, "clusters")
@@ -53,7 +53,6 @@ test_that("can create hdf5", {
 
 test_that("can create hdf5 custom feature ids", {
   barcode_count <- 5
-  proj <- create_dense_mat(barcode_count, 2)
   count_mat <- create_count_mat(3, barcode_count)
   h5path <- sprintf("%s.h5", tempfile())
   seurat_obj_version <- "1.2.3"
@@ -67,4 +66,30 @@ test_that("can create hdf5 custom feature ids", {
   features_group <- hdf5r::openGroup(matrix_group, "features")
   feature_ids_group <- hdf5r::openGroup(features_group, "id")
   expect_equal(hdf5r::readDataSet(feature_ids_group), feature_ids)
+})
+
+test_that("will cast integer projections to float", {
+  barcode_count <- 5
+  count_mat <- create_count_mat(3, barcode_count)
+  h5path <- sprintf("%s.h5", tempfile())
+  feature_ids <- NULL
+  seurat_obj_version <- "1.2.3"
+
+  # create a dense integer matrix
+  proj <- as.integer(create_dense_mat(barcode_count, 2) * 10)
+  projections <- list("p1" = proj)
+
+  create_hdf5(count_mat, list(), projections, h5path, feature_ids, seurat_obj_version)
+
+  f <- hdf5r::h5file(h5path)
+
+  # spot check projections
+  projs_group <- hdf5r::openGroup(f, "projections")
+  proj_group <- hdf5r::openGroup(projs_group, "p1")
+  proj_dataset <- hdf5r::openLocation(proj_group, "data")
+  proj_data <- hdf5r::readDataSet(proj_dataset)
+  expect_true(is.double(proj_data))
+  expect_equal(proj, proj_data)
+
+  f$close()
 })
