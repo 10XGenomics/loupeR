@@ -44,3 +44,18 @@ test_that("can run create_loupe", {
   expect(x, "create_loupe returns TRUE")
 })
 
+test_that("can run create_loupe with integer projection matrix", {
+  # create eula lock file to avoid interactive setup
+  eula_create()
+
+  barcode_count <- 5
+  count_mat <- create_count_mat(100, barcode_count, valid_barcodes = TRUE)
+  proj <- matrix(as.integer(create_dense_mat(barcode_count, 2) * 10), nrow=barcode_count, ncol=2)
+  clusters <- list("f1" = factor(c("a", "c", "b", "a", "b"), levels=c("a", "b", "c"), ordered=TRUE))
+  projections <- list("p1" = proj)
+
+  x <- create_loupe(count_mat, clusters = clusters, projections = projections, executable_path = get_executable_path())
+  expect(x, "create_loupe returns TRUE")
+})
+
+
