@@ -76,7 +76,7 @@ test_that("will cast integer projections to float", {
   seurat_obj_version <- "1.2.3"
 
   # create a dense integer matrix
-  proj <- as.integer(create_dense_mat(barcode_count, 2) * 10)
+  proj <- matrix(as.integer(create_dense_mat(barcode_count, 2) * 10), nrow=barcode_count, ncol=2)
   projections <- list("p1" = proj)
 
   create_hdf5(count_mat, list(), projections, h5path, feature_ids, seurat_obj_version)
@@ -91,5 +91,8 @@ test_that("will cast integer projections to float", {
   expect_true(is.double(proj_data))
   expect_equal(proj, proj_data)
 
+  projs_group$close()
+  proj_group$close()
+  proj_dataset$close()
   f$close()
 })

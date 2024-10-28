@@ -132,7 +132,8 @@ write_projections <- function(f, projections) {
 
     # cast to double as this is required during Loupe validation
     if (!is.double(projection)) {
-      projection <- as.double(projection)
+      vec <- as.double(projection)
+      projection <- matrix(vec, nrow = nrow(projection), ncol = ncol(projection))
     }
 
     is_umap <- grepl("umap", name, ignore.case = TRUE)
