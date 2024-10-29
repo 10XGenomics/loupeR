@@ -1,6 +1,6 @@
 #' Validate the seurat count matrix
 #'
-#' @param count_mat A sparse dgCMatrix
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #'
 #' @return A list with two elements:

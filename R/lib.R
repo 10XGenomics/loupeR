@@ -75,7 +75,7 @@ create_loupe_from_seurat <- function(
 
 #' Create a Loupe file
 #'
-#' @param count_mat A sparse dgCMatrix
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
 #' @param clusters list of factors that hold information for each barcode
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param output_dir optional directory where the Loupe file will be written

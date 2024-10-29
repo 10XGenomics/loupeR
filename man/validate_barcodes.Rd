@@ -10,7 +10,11 @@ validate_barcodes(barcodes)
 \item{barcodes}{a character vector}
 }
 \value{
-A boolean true or false
+A list with two elements:
+\itemize{
+\item success: a logical value indicating success (TRUE) or failure (FALSE)
+\item msg: an optional error message (NULL if success is TRUE)
+}
 }
 \description{
 Validate the format of the barcodes
