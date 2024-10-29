@@ -1,6 +1,6 @@
 #' Create an hdf5 interchange file
 #'
-#' @param count_mat A sparse dgCMatrix
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
 #' @param clusters list of factors that hold information for each barcode
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param h5path path to h5 file
@@ -40,7 +40,7 @@ create_hdf5 <- function(
 #' Writes the matrix to the H5 file
 #'
 #' @param f An open H5File
-#' @param count_mat A sparse dgCMatrix
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
 #'
 #' @noRd

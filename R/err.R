@@ -78,7 +78,7 @@ create_bugreport_from_seurat <- function(obj) {
 #' This bugreport can then be included when reaching out to 10xGenomics Support or when filing
 #' a Github ticket.  This information should be included along with any other output when creating a Loupe file.
 #'
-#' @param count_mat A sparse dgCMatrix
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
 #' @param clusters list of factors that hold information for each barcode
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param assay_name optional string that holds the Seurat Object assay name.

@@ -17,7 +17,7 @@ create_loupe(
 )
 }
 \arguments{
-\item{count_mat}{A sparse dgCMatrix}
+\item{count_mat}{A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.}
 
 \item{clusters}{list of factors that hold information for each barcode}
 

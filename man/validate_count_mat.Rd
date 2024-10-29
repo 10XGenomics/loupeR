@@ -7,7 +7,7 @@
 validate_count_mat(count_mat, feature_ids = NULL)
 }
 \arguments{
-\item{count_mat}{A sparse dgCMatrix}
+\item{count_mat}{A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.}
 
 \item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.}
 }
