@@ -31,7 +31,7 @@ eula <- function() {
   while (!(resp %in% c("y", "yes", "n", "no"))) {
     prompt <- paste0(
       prompt_begin,
-      "Do you accept the End-User License Agreement\n(y/yes or n/no): ",
+      "Do you accept the End-User License Agreement\n(y/yes or n/no): "
     )
 
     resp <- readline(prompt = prompt)
@@ -83,7 +83,6 @@ eula_lock_file <- function() {
 #' Check to see if we have auto accepted the eula
 #' @noRd
 auto_accepted_eula <- function() {
-  print("Xalling")
   value <- Sys.getenv(AUTO_ACCEPT_ENV_VAR, unset = "false")
   value <- trimws(tolower(value))
 
