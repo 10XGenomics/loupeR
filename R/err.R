@@ -89,13 +89,12 @@ create_bugreport_from_seurat <- function(obj) {
 #'
 #' @export
 create_bugreport <- function(
-  count_mat,
-  clusters,
-  projections,
-  assay_name = NULL,
-  seurat_obj_version = NULL,
-  skip_metadata = FALSE
-) {
+    count_mat,
+    clusters,
+    projections,
+    assay_name = NULL,
+    seurat_obj_version = NULL,
+    skip_metadata = FALSE) {
   # metadata
   if (!skip_metadata) {
     cat("\nMetadata:\n\n")
@@ -118,8 +117,8 @@ create_bugreport <- function(
   cat("\nMatrix Sampling:\n\n")
   all_features <- rownames(count_mat)
   all_barcodes <- colnames(count_mat)
-  features <- sample(rownames(count_mat), size=min(10, length(all_features)))
-  barcodes <- sample(colnames(count_mat), size=min(10, length(all_barcodes)))
+  features <- sample(rownames(count_mat), size = min(10, length(all_features)))
+  barcodes <- sample(colnames(count_mat), size = min(10, length(all_barcodes)))
   cat(sprintf("feature count: %d\n", length(all_features)))
   cat(sprintf("barcode count: %d\n", length(all_barcodes)))
   cat(sprintf("feature sampling:\n"))

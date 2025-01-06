@@ -1,5 +1,5 @@
 test_that("validate count matrix", {
-  # wrong type 
+  # wrong type
   resp <- validate_count_mat("not_a_valid_matrix")
   expect_false(resp$success)
   expect_match(resp$msg, "dgCMatrix")
@@ -124,7 +124,7 @@ test_that("validate clusters", {
   # empty name
   factors <- list()
   f <- factor(c("one", "two", "three"))
-  factors[[""]] = f
+  factors[[""]] <- f
   resp <- validate_clusters(factors, 3)
   expect_false(resp$success)
   expect_match(resp$msg, "cannot be the empty string")
@@ -186,7 +186,7 @@ test_that("validate projections", {
   # empty name
   projs <- list()
   proj <- create_dense_mat(barcode_count, 2)
-  projs[[""]] = proj
+  projs[[""]] <- proj
   resp <- validate_projections(projs, barcode_count)
   expect_false(resp$success)
   expect_match(resp$msg, "cannot be the empty string")
@@ -199,19 +199,19 @@ test_that("validate projections", {
 
   # no NaN
   proj <- create_dense_mat(barcode_count, 2)
-  proj[1,1] <- NaN
+  proj[1, 1] <- NaN
   resp <- validate_projections(list("p1" = proj), barcode_count)
   expect_false(resp$success)
   expect_match(resp$msg, "must not contain NaN")
 
   # no infinite
   proj <- create_dense_mat(barcode_count, 2)
-  proj[1,1] <- Inf 
+  proj[1, 1] <- Inf
   resp <- validate_projections(list("p1" = proj), barcode_count)
   expect_false(resp$success)
   expect_match(resp$msg, "infinite values")
 
-  # good 
+  # good
   proj <- create_dense_mat(barcode_count, 2)
   resp <- validate_projections(list("p1" = proj), barcode_count)
   expect_true(resp$success)

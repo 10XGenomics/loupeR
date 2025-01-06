@@ -18,14 +18,13 @@
 #'
 #' @export
 create_loupe_from_seurat <- function(
-  obj,
-  output_dir = NULL,
-  output_name = NULL,
-  dedup_clusters = FALSE,
-  feature_ids = NULL,
-  executable_path = NULL,
-  force = FALSE
-) {
+    obj,
+    output_dir = NULL,
+    output_name = NULL,
+    dedup_clusters = FALSE,
+    feature_ids = NULL,
+    executable_path = NULL,
+    force = FALSE) {
   v <- needs_setup(executable_path)
   if (!v$success) {
     stop(v$msg)
@@ -46,7 +45,7 @@ create_loupe_from_seurat <- function(
   assay <- namedAssay[[1]]
   counts <- counts_matrix_from_assay(assay)
 
-  clusters <- select_clusters(obj, dedup=dedup_clusters)
+  clusters <- select_clusters(obj, dedup = dedup_clusters)
   projections <- select_projections(obj)
 
   logMsg("selected assay:", assay_name)
@@ -60,14 +59,14 @@ create_loupe_from_seurat <- function(
 
   success <- create_loupe(
     counts,
-    clusters=clusters,
-    projections=projections,
-    output_dir=output_dir,
-    output_name=output_name,
-    feature_ids=feature_ids,
-    executable_path=executable_path,
-    force=force,
-    seurat_obj_version=seurat_obj_version
+    clusters = clusters,
+    projections = projections,
+    output_dir = output_dir,
+    output_name = output_name,
+    feature_ids = feature_ids,
+    executable_path = executable_path,
+    force = force,
+    seurat_obj_version = seurat_obj_version
   )
 
   invisible(success)
@@ -91,16 +90,15 @@ create_loupe_from_seurat <- function(
 #'
 #' @export
 create_loupe <- function(
-  count_mat,
-  clusters = list(),
-  projections = list(),
-  output_dir = NULL,
-  output_name = NULL,
-  feature_ids = NULL,
-  executable_path = NULL,
-  force = FALSE,
-  seurat_obj_version = NULL
-) {
+    count_mat,
+    clusters = list(),
+    projections = list(),
+    output_dir = NULL,
+    output_name = NULL,
+    feature_ids = NULL,
+    executable_path = NULL,
+    force = FALSE,
+    seurat_obj_version = NULL) {
   v <- needs_setup(executable_path)
   if (!v$success) {
     stop(v$msg)
@@ -144,10 +142,10 @@ create_loupe <- function(
   logMsg("invoking louper executable")
   ok <- louper_create_cloupe(
     h5path,
-    output_dir=output_dir,
-    output_name=output_name,
-    executable_path=executable_path,
-    force=force
+    output_dir = output_dir,
+    output_name = output_name,
+    executable_path = executable_path,
+    force = force
   )
   if (!ok$success) {
     stop(general_err(ok$msg, "creating the loupe file"))

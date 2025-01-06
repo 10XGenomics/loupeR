@@ -9,7 +9,7 @@ logMsg <- function(...) {
     return()
   }
 
-  now <- format(Sys.time(), format = "%Y/%m/%d %H:%M:%S", usetz=FALSE)
+  now <- format(Sys.time(), format = "%Y/%m/%d %H:%M:%S", usetz = FALSE)
 
   msg_vector <- now
   for (part in l) {
@@ -42,10 +42,10 @@ select_assay <- function(obj) {
   for (name in Seurat::Assays(obj)) {
     if (identical(name, obj@active.assay)) {
       priority <- 1
-    } else if (grepl("rna", name, ignore.case=TRUE)) {
+    } else if (grepl("rna", name, ignore.case = TRUE)) {
       priority <- 2
     } else {
-      priority <-  3
+      priority <- 3
     }
 
     assay_priority[name] <- priority
@@ -55,12 +55,12 @@ select_assay <- function(obj) {
   assay <- NULL
   for (i in seq_along(assay_priority)) {
     name <- names(assay_priority[i])
-    assay <- Seurat::GetAssay(obj, assay=name)
+    assay <- Seurat::GetAssay(obj, assay = name)
     counts <- counts_matrix_from_assay(assay)
 
     if (length(counts) > 0) {
-      result = list()
-      result[[name]] = assay
+      result <- list()
+      result[[name]] <- assay
       return(result)
     }
   }
@@ -79,7 +79,7 @@ counts_matrix_from_assay <- function(assay) {
   if (packageVersion("Seurat") >= package_version("5.0.0")) {
     return(assay$counts)
   } else {
-    if (is(assay, 'Assay5')) {
+    if (is(assay, "Assay5")) {
       stop("Cannot get count matrix: Please upgrade to Seurat > 5 to support dataset")
     }
 
@@ -97,7 +97,7 @@ counts_matrix_from_assay <- function(assay) {
 #' @importFrom Seurat Idents
 #'
 #' @export
-select_clusters <- function(obj, dedup=FALSE) {
+select_clusters <- function(obj, dedup = FALSE) {
   # Use the active.ident as a cluster
   clusters <- list(active_cluster = Seurat::Idents(obj))
 
@@ -106,9 +106,9 @@ select_clusters <- function(obj, dedup=FALSE) {
     data <- obj@meta.data[[name]]
 
     if (is.factor(data)) {
-      clusters[[name]] = data
+      clusters[[name]] <- data
     } else if (is.character(data)) {
-      clusters[[name]] = factor(data)
+      clusters[[name]] <- factor(data)
     }
   }
 
@@ -135,11 +135,11 @@ select_clusters <- function(obj, dedup=FALSE) {
 #'
 #' @export
 select_projections <- function(obj) {
-  projections  = list()
+  projections <- list()
   for (name in Seurat::Reductions(obj)) {
     reduction <- obj[[name]]
     if (dim(reduction@cell.embeddings)[[2]] == 2) {
-      projections[[name]] = reduction@cell.embeddings
+      projections[[name]] <- reduction@cell.embeddings
     }
   }
 
@@ -197,7 +197,7 @@ deduplicate_clusters <- function(clusters) {
     cluster <- clusters[[clusterIdx]]
 
     # find a matching group and potentially add this cluster to it.
-    found = FALSE
+    found <- FALSE
     for (groupIdx in seq_along(groups)) {
       group <- groups[[groupIdx]]
       groupCluster <- group[[1]]
@@ -215,11 +215,13 @@ deduplicate_clusters <- function(clusters) {
     }
   }
 
-  final_clusters = list()
+  final_clusters <- list()
 
   # choose one cluster from each group, prioritizing those with named factors
   for (group in groups) {
-    named_cluster_idx <- Find(function(i) { cluster_levels_word_like(group[[i]]) }, 1:length(group))
+    named_cluster_idx <- Find(function(i) {
+      cluster_levels_word_like(group[[i]])
+    }, 1:length(group))
 
     if (!(is.null(named_cluster_idx))) {
       final_clusters <- c(final_clusters, group[named_cluster_idx])
@@ -271,7 +273,7 @@ get_system_os <- function() {
   os
 }
 
-print_lines <- function(strs, prefix="") {
+print_lines <- function(strs, prefix = "") {
   for (s in strs) {
     cat(sprintf("%s%s\n", prefix, s))
   }

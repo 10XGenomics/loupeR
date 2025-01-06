@@ -48,9 +48,9 @@ validate_count_mat <- function(count_mat, feature_ids = NULL) {
   resp <- validate_barcodes(barcodes)
   if (!resp$success) {
     barcode_msg <- paste(
-      'There is an issue with the formatting of your barcodes:',
+      "There is an issue with the formatting of your barcodes:",
       resp$msg,
-      'Please see the readme at github.com/10xGenomics/loupeR'
+      "Please see the readme at github.com/10xGenomics/loupeR"
     )
 
     return(err(barcode_msg))
@@ -102,10 +102,10 @@ validate_barcodes <- function(barcodes) {
       !grepl(visiumHDRegex, barcode) &&
       !grepl(visiumHDGemRegex, barcode) &&
       !grepl(xeniumCellIdRegex, barcode)) {
-        return(err(paste("Invalid barcode:", barcode)))
+      return(err(paste("Invalid barcode:", barcode)))
     }
   }
-  
+
   SUCCESS
 }
 
@@ -175,7 +175,9 @@ validate_clusters <- function(clusters, barcode_count) {
 #'
 #' @export
 validate_projections <- function(projections, barcode_count) {
-  is.projection <- function(p) { return(is.matrix(p)) }
+  is.projection <- function(p) {
+    return(is.matrix(p))
+  }
 
   # should have dimensions barcodeCount x 2
   projection_dims_good <- function(p) {
@@ -187,7 +189,7 @@ validate_projections <- function(projections, barcode_count) {
   projection_values_good <- function(p) {
     return(
       !any(is.nan(p)) &&
-      !any(is.infinite(p))
+        !any(is.infinite(p))
     )
   }
 

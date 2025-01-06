@@ -1,13 +1,13 @@
 #' Create random barcode
 random_barcode <- function(size = 14) {
-  paste0(sample(c("A", "C", "T", "G"), size, replace=TRUE), collapse="")
+  paste0(sample(c("A", "C", "T", "G"), size, replace = TRUE), collapse = "")
 }
 
 #' Create a sparse count_mat
 #'
 #' @importFrom Matrix rsparsematrix
 create_count_mat <- function(rows, cols, valid_barcodes = FALSE) {
-  mat <- Matrix::rsparsematrix(rows, cols, 0.5, rand.x = function(n) as.integer(100*runif(n)))
+  mat <- Matrix::rsparsematrix(rows, cols, 0.5, rand.x = function(n) as.integer(100 * runif(n)))
 
   rownames <- as.character()
   if (rows > 0) {
@@ -47,7 +47,7 @@ create_dim_reduction <- function(count_mat, key) {
 #' Create a dense matrix
 create_dense_mat <- function(rows, cols) {
   count <- rows * cols
-  matrix(runif(count), nrow=rows)
+  matrix(runif(count), nrow = rows)
 }
 
 get_executable_path <- function() {

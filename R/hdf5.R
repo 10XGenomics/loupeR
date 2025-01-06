@@ -13,19 +13,18 @@
 #'
 #' @noRd
 create_hdf5 <- function(
-  count_mat,
-  clusters,
-  projections,
-  h5path,
-  feature_ids,
-  seurat_obj_version
-) {
+    count_mat,
+    clusters,
+    projections,
+    h5path,
+    feature_ids,
+    seurat_obj_version) {
   if (file.exists(h5path)) {
     return(err(sprintf("cannot create h5 file %s", h5path)))
   }
 
   # create hdf5 file and matrix groups
-  f <- hdf5r::H5File$new(h5path, mode="w")
+  f <- hdf5r::H5File$new(h5path, mode = "w")
 
   write_mat(f, count_mat, feature_ids)
   write_clusters(f, clusters)
@@ -62,14 +61,16 @@ write_mat <- function(f, count_mat, feature_ids) {
   matrix_group$close()
 
   if (is.null(feature_ids)) {
-    feature_ids <- lapply(1:length(features), function(x) {return(sprintf("feature_%d", x))})
+    feature_ids <- lapply(1:length(features), function(x) {
+      return(sprintf("feature_%d", x))
+    })
   }
 
   create_str_dataset(features_group, "name", features)
-  create_str_dataset(features_group, "id", as.character(feature_ids)) 
+  create_str_dataset(features_group, "id", as.character(feature_ids))
   create_str_dataset(features_group, "feature_type", rep("Gene Expression", length(features)))
   create_str_dataset(features_group, "_all_tag_keys", as.character()) # required features
-  
+
   features_group$close()
 }
 
@@ -79,7 +80,7 @@ write_mat <- function(f, count_mat, feature_ids) {
 #' @param prefix What to prefix each line
 #'
 #' @noRd
-print_metadata <- function(metadata, prefix="") {
+print_metadata <- function(metadata, prefix = "") {
   for (name in names(metadata)) {
     val <- metadata[[name]]
 
@@ -179,19 +180,19 @@ create_metadata <- function(seurat_obj_version = NULL) {
   }
 
   meta <- list()
-  meta["tool"]             <- "loupeR"
-  meta["tool_version"]     <- as.character(utils::packageVersion("loupeR"))
-  meta["os"]               <- ifelse(is.null(sinfo$running), "Unknown", sinfo$running)
-  meta["system"]           <- sinfo$platform
-  meta["language"]         <- rversion$language
+  meta["tool"] <- "loupeR"
+  meta["tool_version"] <- as.character(utils::packageVersion("loupeR"))
+  meta["os"] <- ifelse(is.null(sinfo$running), "Unknown", sinfo$running)
+  meta["system"] <- sinfo$platform
+  meta["language"] <- rversion$language
   meta["language_version"] <- language_version
 
-  extra = list()
-  extra["loupeR_seurat_version"]        <- as.character(utils::packageVersion("Seurat"))
+  extra <- list()
+  extra["loupeR_seurat_version"] <- as.character(utils::packageVersion("Seurat"))
   extra["loupeR_seurat_object_version"] <- ifelse(is.null(seurat_obj_version), "n/a", seurat_obj_version)
-  extra["loupeR_hdf5r_version"]         <- as.character(utils::packageVersion("hdf5r"))
-  extra["loupeR_hdf5_version"]          <- hdf5r::h5version(FALSE)
-  meta[["extra"]]                       <- extra
+  extra["loupeR_hdf5r_version"] <- as.character(utils::packageVersion("hdf5r"))
+  extra["loupeR_hdf5_version"] <- hdf5r::h5version(FALSE)
+  meta[["extra"]] <- extra
 
   meta
 }
@@ -254,8 +255,7 @@ create_str_dataset <- function(obj, key, strs, ...) {
     max_len <- max(as.numeric(lapply(strs, nchar)))
   }
 
-  dtype <- hdf5r::H5T_STRING$new(size=max_len)
+  dtype <- hdf5r::H5T_STRING$new(size = max_len)
 
-  create_dataset(obj, key, strs, dtype=dtype, ...)
+  create_dataset(obj, key, strs, dtype = dtype, ...)
 }
-

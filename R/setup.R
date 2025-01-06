@@ -56,11 +56,11 @@ install_executable <- function(force = FALSE) {
   # required until the package is made public and we no longer github auth
   # for now users MUST set one of these enviroment variables.
   headers <- list()
-  for (envname in c('GITHUB_PAT', 'GITHUB_TOKEN')) {
-    token <- Sys.getenv(x=envname)
+  for (envname in c("GITHUB_PAT", "GITHUB_TOKEN")) {
+    token <- Sys.getenv(x = envname)
     if (token != "") {
-      headers["Authorization"] = paste0("token ", token)
-      headers["Accept"] = "application/octet-stream"
+      headers["Authorization"] <- paste0("token ", token)
+      headers["Accept"] <- "application/octet-stream"
       break
     }
   }
@@ -169,7 +169,7 @@ executable_basename <- function() {
 
 #' Louper Executable Artifacts
 #' @noRd
-artifacts = list(
+artifacts <- list(
   linux = list(
     url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.2/louper-linux-x64",
     md5 = "b3fd93fd88a43fbcf3f6e40af3186eaa"

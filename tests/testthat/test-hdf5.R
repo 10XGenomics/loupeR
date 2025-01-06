@@ -2,7 +2,7 @@ test_that("can create hdf5", {
   barcode_count <- 5
   proj <- create_dense_mat(barcode_count, 2)
   count_mat <- create_count_mat(100, barcode_count)
-  clusters <- list("f1" = factor(c("a", "c", "b", "a", "b"), levels=c("a", "b", "c"), ordered=TRUE))
+  clusters <- list("f1" = factor(c("a", "c", "b", "a", "b"), levels = c("a", "b", "c"), ordered = TRUE))
   projections <- list("p1" = proj)
   h5path <- sprintf("%s.h5", tempfile())
 
@@ -76,7 +76,7 @@ test_that("will cast integer projections to float", {
   seurat_obj_version <- "1.2.3"
 
   # create a dense integer matrix
-  proj <- matrix(as.integer(create_dense_mat(barcode_count, 2) * 10), nrow=barcode_count, ncol=2)
+  proj <- matrix(as.integer(create_dense_mat(barcode_count, 2) * 10), nrow = barcode_count, ncol = 2)
   projections <- list("p1" = proj)
 
   create_hdf5(count_mat, list(), projections, h5path, feature_ids, seurat_obj_version)
