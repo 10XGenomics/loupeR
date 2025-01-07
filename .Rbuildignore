@@ -5,3 +5,4 @@
 .github
 misc
 ^\.github$
+.lintr

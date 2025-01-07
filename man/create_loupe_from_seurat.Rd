@@ -23,7 +23,8 @@ create_loupe_from_seurat(
 
 \item{dedup_clusters}{optional logical that will try to deduplicate all clusters that are numerically the same}
 
-\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.}
+\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.
+Typically, these are the ensemble ids.}
 
 \item{executable_path}{optional path to the louper executable.}
 

@@ -17,7 +17,8 @@ create_loupe(
 )
 }
 \arguments{
-\item{count_mat}{A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.}
+\item{count_mat}{A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
+Rows are features, Columns are barcodes.}
 
 \item{clusters}{list of factors that hold information for each barcode}
 
@@ -27,13 +28,15 @@ create_loupe(
 
 \item{output_name}{optional name of the Loupe file with the extensions not included.}
 
-\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.}
+\item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.
+Typically, these are the ensemble ids.}
 
 \item{executable_path}{optional path to the louper executable.}
 
 \item{force}{optional logical as to whether we should overwrite an already existing file}
 
-\item{seurat_obj_version}{optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.}
+\item{seurat_obj_version}{optional string that holds the Seurat Object version.
+It is useful for debugging compatibility issues.}
 }
 \value{
 TRUE on success, FALSE on error
