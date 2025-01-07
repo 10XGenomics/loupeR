@@ -54,7 +54,7 @@ louper_create_cloupe <- function(
   }
 
   cmd_msg <- sprintf('running command: "%s"', paste(c(executable_path, args), collapse = " "))
-  logMsg(cmd_msg)
+  log_msg(cmd_msg)
 
   status <- system2(command = executable_path, args = args)
 

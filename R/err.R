@@ -9,18 +9,28 @@ err <- function(msg) {
 
 #' The non-error variant of above
 #' @noRd
-SUCCESS <- list(success = TRUE, msg = NULL)
+SUCCESS <- list(success = TRUE, msg = NULL) # nolint
 
 #' validation error with link to 10x support
 #' @noRd
 validation_err <- function(msg, name) {
-  sprintf("\nIt looks like the formatting of your %s does not match the required formatting for LoupeR. For further information, please see the documentation: 10xgen.com/louper\n\n%s", name, msg)
+  sprintf(
+    "\nIt looks like the formatting of your %s does not match the required formatting for LoupeR. " +
+      "For further information, please see the documentation: 10xgen.com/louper\n\n%s",
+    name,
+    msg
+  )
 }
 
 #' general error with link to 10x support
 #' @noRd
 general_err <- function(msg, name) {
-  sprintf("\nIt looks like there was an issue with %s. For further information, please see the documentation: 10xgen.com/louper\n\n%s", name, msg)
+  sprintf(
+    "\nIt looks like there was an issue with %s. For further information, " +
+      "please see the documentation: 10xgen.com/louper\n\n%s",
+    name,
+    msg
+  )
 }
 
 #' Create a Bugreport from a Seurat Object
@@ -49,15 +59,15 @@ create_bugreport_from_seurat <- function(obj) {
   }
 
   # overview
-  namedAssay <- select_assay(obj)
-  if (is.null(namedAssay)) {
+  named_assay <- select_assay(obj)
+  if (is.null(named_assay)) {
     cat("\nSeurat:\n\n")
     cat("No assay found\n")
     return(invisible())
   }
 
-  assay_name <- names(namedAssay)
-  assay <- namedAssay[[1]]
+  assay_name <- names(named_assay)
+  assay <- named_assay[[1]]
   clusters <- select_clusters(obj)
   projections <- select_projections(obj)
   counts <- counts_matrix_from_assay(assay)
@@ -78,11 +88,13 @@ create_bugreport_from_seurat <- function(obj) {
 #' This bugreport can then be included when reaching out to 10xGenomics Support or when filing
 #' a Github ticket.  This information should be included along with any other output when creating a Loupe file.
 #'
-#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
+#'   Rows are features, Columns are barcodes.
 #' @param clusters list of factors that hold information for each barcode
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param assay_name optional string that holds the Seurat Object assay name.
-#' @param seurat_obj_version optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.
+#' @param seurat_obj_version optional string that holds the Seurat Object version.
+#'   It is useful for debugging compatibility issues.
 #' @param skip_metadata optional logical which skips printing metadata
 #'
 #' @importFrom methods is

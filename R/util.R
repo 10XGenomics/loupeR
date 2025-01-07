@@ -3,7 +3,7 @@
 #' @param ... a variable number of character message parts
 #'
 #' @noRd
-logMsg <- function(...) {
+log_msg <- function(...) {
   l <- list(...)
   if (length(l) == 0) {
     return()
@@ -200,8 +200,8 @@ deduplicate_clusters <- function(clusters) {
     found <- FALSE
     for (groupIdx in seq_along(groups)) {
       group <- groups[[groupIdx]]
-      groupCluster <- group[[1]]
-      if (clusters_identical(cluster, groupCluster)) {
+      group_cluster <- group[[1]]
+      if (clusters_identical(cluster, group_cluster)) {
         group <- c(group, cluster_with_name)
         groups[[groupIdx]] <- group
         found <- TRUE
@@ -221,7 +221,7 @@ deduplicate_clusters <- function(clusters) {
   for (group in groups) {
     named_cluster_idx <- Find(function(i) {
       cluster_levels_word_like(group[[i]])
-    }, 1:length(group))
+    }, seq_along(group))
 
     if (!(is.null(named_cluster_idx))) {
       final_clusters <- c(final_clusters, group[named_cluster_idx])

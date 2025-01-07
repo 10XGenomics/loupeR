@@ -1,11 +1,14 @@
 #' Create an hdf5 interchange file
 #'
-#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
+#'   Rows are features, Columns are barcodes.
 #' @param clusters list of factors that hold information for each barcode
 #' @param projections list of matrices, all with dimensions (barcodeCount x 2)
 #' @param h5path path to h5 file
-#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
-#' @param seurat_obj_version optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
+#' @param seurat_obj_version optional string that holds the Seurat Object version.
+#'   It is useful for debugging compatibility issues.
 #'
 #' @importFrom hdf5r H5File
 #'
@@ -39,8 +42,10 @@ create_hdf5 <- function(
 #' Writes the matrix to the H5 file
 #'
 #' @param f An open H5File
-#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
-#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
+#'   Rows are features, Columns are barcodes.
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
 #'
 #' @noRd
 write_mat <- function(f, count_mat, feature_ids) {
@@ -61,7 +66,7 @@ write_mat <- function(f, count_mat, feature_ids) {
   matrix_group$close()
 
   if (is.null(feature_ids)) {
-    feature_ids <- lapply(1:length(features), function(x) {
+    feature_ids <- lapply(seq_along(features), function(x) {
       return(sprintf("feature_%d", x))
     })
   }
@@ -200,7 +205,8 @@ create_metadata <- function(seurat_obj_version = NULL) {
 #' Writes the metadata
 #'
 #' @param f An open H5File
-#' @param seurat_obj_version optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.
+#' @param seurat_obj_version optional string that holds the Seurat Object version.
+#'   It is useful for debugging compatibility issues.
 #'
 #' @noRd
 write_metadata <- function(f, seurat_obj_version) {

@@ -1,7 +1,9 @@
 #' Validate the seurat count matrix
 #'
-#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.
-#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.  Typically, these are the ensemble ids.
+#' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
+#'   Rows are features, Columns are barcodes.
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
 #'
 #' @return A list with two elements:
 #' \itemize{
@@ -12,7 +14,7 @@
 #' @importFrom methods is
 #'
 #' @export
-validate_count_mat <- function(count_mat, feature_ids = NULL) {
+validate_count_mat <- function(count_mat, feature_ids = NULL) { # nolint: cyclocomp_linter.
   if (!is(count_mat, "dgCMatrix")) {
     return(err("count_mat must be a dgCMatrix"))
   }
@@ -89,19 +91,21 @@ validate_count_mat <- function(count_mat, feature_ids = NULL) {
 #' @importFrom methods is
 #'
 #' @export
-validate_barcodes <- function(barcodes) {
-  barcodeRegex <- "^(.*[:_])?([ACGT]{14,})([:_].*)?$"
-  barcodeGemRegex <- "^(.*[:_])?([ACGT]{14,})-(\\d+)([:_].*)?$"
-  visiumHDRegex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})([:_].*)?$"
-  visiumHDGemRegex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})-(\\d+)([:_].*)?$"
-  xeniumCellIdRegex <- "^(.*[:_])?([a-p]{1,8})-(\\d+)([:_].*)?$"
+validate_barcodes <- function(barcodes) { # nolint: cyclocomp_linter.
+  barcode_regex <- "^(.*[:_])?([ACGT]{14,})([:_].*)?$"
+  barcode_gem_regex <- "^(.*[:_])?([ACGT]{14,})-(\\d+)([:_].*)?$"
+  visium_hd_regex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})([:_].*)?$"
+  visium_hd_gem_regex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})-(\\d+)([:_].*)?$"
+  xenium_cell_id_regex <- "^(.*[:_])?([a-p]{1,8})-(\\d+)([:_].*)?$"
 
   for (barcode in barcodes) {
-    if (!grepl(barcodeRegex, barcode) &&
-      !grepl(barcodeGemRegex, barcode) &&
-      !grepl(visiumHDRegex, barcode) &&
-      !grepl(visiumHDGemRegex, barcode) &&
-      !grepl(xeniumCellIdRegex, barcode)) {
+    if (
+      !grepl(barcode_regex, barcode) &&
+        !grepl(barcode_gem_regex, barcode) &&
+        !grepl(visium_hd_regex, barcode) &&
+        !grepl(visium_hd_gem_regex, barcode) &&
+        !grepl(xenium_cell_id_regex, barcode)
+    ) {
       return(err(paste("Invalid barcode:", barcode)))
     }
   }
@@ -123,7 +127,7 @@ validate_barcodes <- function(barcodes) {
 #' @importFrom methods is
 #'
 #' @export
-validate_clusters <- function(clusters, barcode_count) {
+validate_clusters <- function(clusters, barcode_count) { # nolint: cyclocomp_linter.
   cluster_names <- names(clusters)
 
   if (!is.list(clusters)) {
@@ -174,8 +178,8 @@ validate_clusters <- function(clusters, barcode_count) {
 #' @importFrom methods is
 #'
 #' @export
-validate_projections <- function(projections, barcode_count) {
-  is.projection <- function(p) {
+validate_projections <- function(projections, barcode_count) { # nolint: cyclocomp_linter.
+  is_projection <- function(p) {
     return(is.matrix(p))
   }
 
@@ -201,7 +205,7 @@ validate_projections <- function(projections, barcode_count) {
   if (length(projections) == 0) {
     return(err("projections must have at least one projection"))
   }
-  if (!all(sapply(projections, is.projection))) {
+  if (!all(sapply(projections, is_projection))) {
     return(err("projections must all be matrices"))
   }
   if (is.null(proj_names)) {

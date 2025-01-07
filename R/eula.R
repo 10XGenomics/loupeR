@@ -1,4 +1,4 @@
-AUTO_ACCEPT_ENV_VAR <- "AUTO_ACCEPT_EULA"
+AUTO_ACCEPT_ENV_VAR <- "AUTO_ACCEPT_EULA" # nolint
 
 #' Present EULA and Record agreement
 #'
