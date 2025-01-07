@@ -15,8 +15,10 @@ SUCCESS <- list(success = TRUE, msg = NULL) # nolint
 #' @noRd
 validation_err <- function(msg, name) {
   sprintf(
-    "\nIt looks like the formatting of your %s does not match the required formatting for LoupeR. " +
-      "For further information, please see the documentation: 10xgen.com/louper\n\n%s",
+    paste(
+      "\nIt looks like the formatting of your %s does not match the required formatting for LoupeR.",
+      "For further information, please see the documentation: 10xgen.com/louper\n\n%s"
+    ),
     name,
     msg
   )
@@ -26,8 +28,10 @@ validation_err <- function(msg, name) {
 #' @noRd
 general_err <- function(msg, name) {
   sprintf(
-    "\nIt looks like there was an issue with %s. For further information, " +
+    paste(
+      "\nIt looks like there was an issue with %s. For further information,",
       "please see the documentation: 10xgen.com/louper\n\n%s",
+    ),
     name,
     msg
   )

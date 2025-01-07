@@ -24,8 +24,10 @@ needs_setup <- function(executable_path = NULL) {
 
   if (needs_eula && needs_executable) {
     return(err(
-      "Please call `loupeR::setup()` to install the Louper executable " +
+      paste(
+        "Please call `loupeR::setup()` to install the Louper executable ",
         "and to agree to the EULA before continuing"
+      )
     ))
   }
   if (needs_eula) {
