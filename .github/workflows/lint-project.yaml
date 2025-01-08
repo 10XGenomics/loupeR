@@ -22,11 +22,18 @@ jobs:
           use-public-rspm: true
 
       - name: Install lintr
-        run: install.packages("lintr")
+        run: |
+          install.packages("lintr")
+          install.packages("devtools")
         shell: Rscript {0}
 
+      # we must use devtools::load_all to all lintr to not consider
+      # all of the internal non exported functions as non declared globals
+      # https://github.com/r-lib/lintr/issues/1137#issuecomment-1127828843
       - name: Lint root directory
-        run: lintr::lint_dir()
+        run: |
+          devtools::load_all()
+          lintr::lint_dir()
         shell: Rscript {0}
         env:
           LINTR_ERROR_ON_LINT: true

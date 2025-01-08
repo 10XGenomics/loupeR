@@ -46,9 +46,9 @@ test_that("can create hdf5", {
   expect_equal(hdf5r::readDataSet(tool), "loupeR")
 
   extra <- hdf5r::openGroup(metadata, "extra")
-  loupeR_seurat_version <- hdf5r::openLocation(extra, "loupeR_seurat_version")
-  val <- hdf5r::readDataSet(loupeR_seurat_version)
-  expect(!is.null(hdf5r::readDataSet(loupeR_seurat_version)), "extra field is missing")
+  louper_seurat_version <- hdf5r::openLocation(extra, "loupeR_seurat_version")
+  val <- hdf5r::readDataSet(louper_seurat_version)
+  expect(!is.null(hdf5r::readDataSet(louper_seurat_version)), "extra field is missing")
 })
 
 test_that("can create hdf5 custom feature ids", {
