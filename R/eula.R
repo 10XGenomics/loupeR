@@ -71,7 +71,7 @@ eula_have_agreed <- function() {
 #' Path to directory that holds EULA agreement lock file
 #' @noRd
 eula_data_dir <- function() {
-  tools::R_user_dir("loupeR", "data")
+  get_user_data_dir()
 }
 
 #' Path to EULA agreement lock file
