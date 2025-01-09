@@ -23,7 +23,12 @@ needs_setup <- function(executable_path = NULL) {
   needs_executable <- is.null(executable_path) && is.null(find_executable())
 
   if (needs_eula && needs_executable) {
-    return(err("Please call `loupeR::setup()` to install the Louper executable and to agree to the EULA before continuing"))
+    return(err(
+      paste(
+        "Please call `loupeR::setup()` to install the Louper executable ",
+        "and to agree to the EULA before continuing"
+      )
+    ))
   }
   if (needs_eula) {
     return(err("Please call `loupeR::setup()` to agree to the EULA before continuing"))
@@ -46,8 +51,8 @@ needs_setup <- function(executable_path = NULL) {
 #' @importFrom Seurat GetAssay
 #'
 #' @noRd
-install_executable <- function(force = FALSE) {
-  logMsg("Downloading executable")
+install_executable <- function(force = FALSE) { # nolint: cyclocomp_linter.
+  log_msg("Downloading executable")
 
   artifact <- get_artifact()
 
@@ -56,18 +61,18 @@ install_executable <- function(force = FALSE) {
   # required until the package is made public and we no longer github auth
   # for now users MUST set one of these enviroment variables.
   headers <- list()
-  for (envname in c('GITHUB_PAT', 'GITHUB_TOKEN')) {
-    token <- Sys.getenv(x=envname)
+  for (envname in c("GITHUB_PAT", "GITHUB_TOKEN")) {
+    token <- Sys.getenv(x = envname)
     if (token != "") {
-      headers["Authorization"] = paste0("token ", token)
-      headers["Accept"] = "application/octet-stream"
+      headers["Authorization"] <- paste0("token ", token)
+      headers["Accept"] <- "application/octet-stream"
       break
     }
   }
 
   ok <- utils::download.file(artifact$url, destfile, headers = headers, mode = "wb")
   if (ok != 0) {
-    logMsg("Download failed")
+    log_msg("Download failed")
     return(invisible(FALSE))
   }
 
@@ -76,26 +81,26 @@ install_executable <- function(force = FALSE) {
   if (!dir.exists(dirname(executable_path))) {
     ok <- dir.create(dirname(executable_path), showWarnings = FALSE, recursive = TRUE)
     if (!ok) {
-      logMsg("Failed to create installation directory")
+      log_msg("Failed to create installation directory")
       return(invisible(FALSE))
     }
   }
 
   ok <- file.copy(destfile, executable_path, overwrite = TRUE)
   if (!ok) {
-    logMsg("Failed to copy executable to final installation directory")
+    log_msg("Failed to copy executable to final installation directory")
     return(invisible(FALSE))
   }
 
   ok <- Sys.chmod(executable_path, mode = "0755", use_umask = TRUE)
   if (!ok) {
-    logMsg("Failed to update executable file permissions")
+    log_msg("Failed to update executable file permissions")
     return(invisible(FALSE))
   }
 
   v <- verify_executable(executable_path)
   if (!v$success) {
-    logMsg("Verification of executable failed:", v$msg)
+    log_msg("Verification of executable failed:", v$msg)
     return(invisible(FALSE))
   }
 
@@ -169,7 +174,7 @@ executable_basename <- function() {
 
 #' Louper Executable Artifacts
 #' @noRd
-artifacts = list(
+artifacts <- list(
   linux = list(
     url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.2/louper-linux-x64",
     md5 = "b3fd93fd88a43fbcf3f6e40af3186eaa"

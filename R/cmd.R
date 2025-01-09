@@ -10,12 +10,11 @@
 #'
 #' @noRd
 louper_create_cloupe <- function(
-  h5path,
-  output_dir = NULL,
-  output_name = NULL, 
-  executable_path = NULL,
-  force = FALSE
-) {
+    h5path,
+    output_dir = NULL,
+    output_name = NULL,
+    executable_path = NULL,
+    force = FALSE) {
   # default loupe name to `converted.cloupe`
   if (is.null(output_name)) {
     output_name <- "converted"
@@ -54,10 +53,10 @@ louper_create_cloupe <- function(
     return(err(sprintf("cannot find Louper executable at path: '%s'", executable_path)))
   }
 
-  cmd_msg <- sprintf('running command: "%s"', paste(c(executable_path, args), collapse=" "))
-  logMsg(cmd_msg)
+  cmd_msg <- sprintf('running command: "%s"', paste(c(executable_path, args), collapse = " "))
+  log_msg(cmd_msg)
 
-  status <- system2(command=executable_path, args=args)
+  status <- system2(command = executable_path, args = args)
 
   if (status == 0) {
     return(SUCCESS)

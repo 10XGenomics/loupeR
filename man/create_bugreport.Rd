@@ -14,7 +14,8 @@ create_bugreport(
 )
 }
 \arguments{
-\item{count_mat}{A sparse dgCMatrix as is generated via Matrix::rsparsematrix.  Rows are features, Columns are barcodes.}
+\item{count_mat}{A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
+Rows are features, Columns are barcodes.}
 
 \item{clusters}{list of factors that hold information for each barcode}
 
@@ -22,7 +23,8 @@ create_bugreport(
 
 \item{assay_name}{optional string that holds the Seurat Object assay name.}
 
-\item{seurat_obj_version}{optional string that holds the Seurat Object version.  It is useful for debugging compatibility issues.}
+\item{seurat_obj_version}{optional string that holds the Seurat Object version.
+It is useful for debugging compatibility issues.}
 
 \item{skip_metadata}{optional logical which skips printing metadata}
 }
