@@ -1,3 +1,7 @@
+# Environment variable that allows overwriting the user data directory
+# If unset, defaults to: tools::R_user_dir("loupeR", "data")
+LOUPER_USER_DATA_DIR_ENV_VAR <- "LOUPER_USER_DATA_DIR" # nolint
+
 #' Log a message
 #'
 #' @param ... a variable number of character message parts
@@ -277,4 +281,19 @@ print_lines <- function(strs, prefix = "") {
   for (s in strs) {
     cat(sprintf("%s%s\n", prefix, s))
   }
+}
+
+#' Gets the path to the user directory on the machine where data is stored.
+#'
+#' @return A filesystem path to the user directory where things like the EULA can be stored.
+#'
+#' @noRd
+get_user_data_dir <- function() {
+  overwritten_data_dir <- Sys.getenv(LOUPER_USER_DATA_DIR_ENV_VAR)
+  overwritten_data_dir <- trimws(overwritten_data_dir)
+  if (overwritten_data_dir != "") {
+    return(overwritten_data_dir)
+  }
+
+  tools::R_user_dir("loupeR", "data")
 }

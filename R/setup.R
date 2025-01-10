@@ -148,7 +148,7 @@ verify_executable <- function(executable_path) {
 #'
 #' @noRd
 default_executable_path <- function() {
-  basedir <- tools::R_user_dir("loupeR", "data")
+  basedir <- get_user_data_dir()
   normalizePath(path.expand(file.path(basedir, executable_basename())), mustWork = FALSE)
 }
 
