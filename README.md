@@ -26,7 +26,7 @@
 
 Converting a Seurat object to a Loupe file is as simple as the following:
 
-```R
+```r
 # import the library
 library("loupeR")
 
@@ -36,7 +36,7 @@ create_loupe_from_seurat(seurat_obj)
 
 Use the function `create_loupe` if you need more control in the clusters and projections that included in the Loupe file.
 
-```R
+```r
 # import the library
 library("loupeR")
 
@@ -56,7 +56,7 @@ create_loupe(
 
 Additionally, use the utility function `read_feature_ids_from_tsv` to read the Ensemble ids from the 10x dataset. A Seurat object will only have imported the feature names or ids and attached these as rownames to the count matrix. In order for the Ensemble id links to work correctly within Loupe Browser, one must manually import them and include them.
 
-```R
+```r
 # import the library
 library("loupeR")
 
@@ -105,6 +105,10 @@ loupeR::setup()
 ### Automated installation and execution
 
 If you are interested in automating LoupeR installation and execution (and are blocked by interactive license acceptance), please write to [support@10xgenomics.com](mailto:support@10xgenomics.com) for further assistance.
+
+### Customizing the user data directory
+
+By default the louper executable, which is the binary that understands and creates Loupe files, will be stored in the system's `tools::R_user_dir` directory.  You can update this path by setting the environment variable `LOUPER_USER_DATA_DIR` to a directory of your choosing.
 
 ## Loupe Browser Compatibility
 
@@ -159,7 +163,7 @@ For more in depth documentation and support please head to our [support page](ht
 
 Additionally, we have provided utility functions to help gather useful information when contacting support or creating a Github issue.
 
-```R
+```r
 # import the library
 library("loupeR")
 
