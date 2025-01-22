@@ -1,6 +1,6 @@
 Package: loupeR
 Title: Converts Seurat objects to 10x Genomics Loupe files
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: 
     person(given = "Eric",
            family = "Siegel",
