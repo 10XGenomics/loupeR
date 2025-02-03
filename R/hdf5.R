@@ -14,7 +14,7 @@
 #'
 #' @return TRUE on success, FALSE on error
 #'
-#' @noRd
+#' @export
 create_hdf5 <- function(
     count_mat,
     clusters,
@@ -23,7 +23,7 @@ create_hdf5 <- function(
     feature_ids,
     seurat_obj_version) {
   if (file.exists(h5path)) {
-    return(err(sprintf("cannot create h5 file %s", h5path)))
+    return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
   }
 
   # create hdf5 file and matrix groups
