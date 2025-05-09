@@ -27,6 +27,32 @@ create_count_mat <- function(rows, cols, valid_barcodes = FALSE) {
   mat
 }
 
+#' Create a sparse count_mat with BPCells
+#'
+#' @importFrom Matrix rsparsematrix
+create_count_mat_BPCells <- function(rows, cols, valid_barcodes = FALSE) {
+  mat <- Matrix::rsparsematrix(rows, cols, 0.5, rand.x = function(n) as.integer(100 * runif(n)))
+
+  rownames <- as.character()
+  if (rows > 0) {
+    rownames <- paste0("row", 1:rows)
+  }
+
+  colnames <- as.character()
+  if (cols > 0) {
+    if (valid_barcodes) {
+      colnames <- lapply(rep(14, cols), random_barcode)
+    } else {
+      colnames <- paste0("col", 1:cols)
+    }
+  }
+
+  dimnames(mat) <- list(rownames, colnames)
+
+  mat_dir <- tempfile(pattern = "bpcells")
+  BPCells::write_matrix_dir(mat, mat_dir)
+}
+
 #' Create a dimensional reduction (projection) object
 create_dim_reduction <- function(count_mat, key) {
   barcode_count <- dim(count_mat)[2]

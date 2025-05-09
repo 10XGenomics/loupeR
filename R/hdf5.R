@@ -39,6 +39,62 @@ create_hdf5 <- function(
   SUCCESS
 }
 
+#' Create an hdf5 interchange file with BPCells
+#'
+#' @param count_mat An \code{IterableMatrix} generated from \pkg{BPCells}. Rows
+#' are features, Columns are barcodes.
+#' @param clusters list of factors that hold information for each barcode
+#' @param projections list of matrices, all with dimensions (barcodeCount x 2)
+#' @param h5path path to h5 file
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
+#' @param seurat_obj_version optional string that holds the Seurat Object version.
+#'   It is useful for debugging compatibility issues.
+#'
+#' @importFrom hdf5r H5File
+#'
+#' @return TRUE on success, FALSE on error
+#'
+#' @details
+#' Run \code{remotes::install_github('bnprks/BPCells/r')} to install \pkg{BPCells},
+#' otherwise this function will raise an error.
+#'
+#' @export
+create_hdf5_BPCells <- function(
+    count_mat,
+    clusters,
+    projections,
+    h5path,
+    feature_ids,
+    seurat_obj_version) {
+  if (!requireNamespace("BPCells", quietly = TRUE)) {
+    stop(
+      "Please install 'BPCells' to write IterableMatrix:\n",
+      " remotes::install_github('bnprks/BPCells/r')"
+    )
+  }
+  if (file.exists(h5path)) {
+    return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
+  }
+  if (length(feature_ids) == 0) {
+    feature_ids <- rownames(count_mat)
+  }
+  count_mat <- BPCells::write_matrix_10x_hdf5(
+    count_mat,
+    path = h5path,
+    feature_ids = feature_ids,
+    type = "auto"
+  )
+
+  f <- hdf5r::H5File$new(h5path, mode = "r+")
+  write_clusters(f, clusters)
+  write_projections(f, projections)
+  write_metadata(f, seurat_obj_version)
+  f$close()
+
+  SUCCESS
+}
+
 #' Writes the matrix to the H5 file
 #'
 #' @param f An open H5File

@@ -59,6 +59,29 @@ test_that("can run create_loupe", {
   expect(x, "create_loupe returns TRUE")
 })
 
+test_that("can run create_loupe with BPCells", {
+  barcode_count <- 5
+  count_mat <- create_count_mat_BPCells(100, barcode_count, valid_barcodes = TRUE)
+  proj <- create_dense_mat(barcode_count, 2)
+  projections <- list("p1" = proj)
+
+  cluster <- factor(
+    c("a", "c", "b", "a", "b"),
+    levels = c("a", "b", "c"),
+    ordered = TRUE
+  )
+  clusters <- list("f1" = cluster)
+
+  x <- create_loupe(
+    count_mat,
+    clusters = clusters,
+    projections = projections,
+    executable_path = get_executable_path()
+  )
+
+  expect(x, "create_loupe returns TRUE")
+})
+
 test_that("can run create_loupe with integer projection matrix", {
   barcode_count <- 5
   count_mat <- create_count_mat(100, barcode_count, valid_barcodes = TRUE)
