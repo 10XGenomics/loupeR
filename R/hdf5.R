@@ -81,12 +81,10 @@ create_hdf5_BPCells <- function(
   if (length(feature_ids) == 0) {
     feature_ids <- rownames(count_mat)
   }
-  count_mat <- BPCells::write_matrix_10x_hdf5(
-    count_mat,
-    path = h5path,
-    feature_ids = feature_ids,
-    type = "auto"
-  )
+  if (!BPCells::matrix_type(count_mat) == "uint32_t") {
+    count_mat <- BPCells::convert_matrix_type(count_mat)
+  }
+  count_mat <- BPCells::write_matrix_10x_hdf5(count_mat, path = h5path)
 
   f <- hdf5r::H5File$new(h5path, mode = "r+")
 
