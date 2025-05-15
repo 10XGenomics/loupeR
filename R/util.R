@@ -81,13 +81,13 @@ select_assay <- function(obj) {
 #' @export
 counts_matrix_from_assay <- function(assay) {
   if (packageVersion("Seurat") >= package_version("5.0.0")) {
-    return(assay$counts)
+    assay$counts
   } else {
     if (is(assay, "Assay5")) {
       stop("Cannot get count matrix: Please upgrade to Seurat > 5 to support dataset")
     }
 
-    return(assay@counts)
+    assay@counts
   }
 }
 
