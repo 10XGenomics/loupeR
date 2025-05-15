@@ -67,7 +67,7 @@ write_mat <- function(f, count_mat, feature_ids) {
 
   if (is.null(feature_ids)) {
     feature_ids <- lapply(seq_along(features), function(x) {
-      return(sprintf("feature_%d", x))
+      sprintf("feature_%d", x)
     })
   }
 

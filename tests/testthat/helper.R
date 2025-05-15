@@ -54,8 +54,8 @@ get_executable_path <- function() {
   wd <- getwd()
   os <- get_system_os()
   if (os == "windows") {
-    return(file.path(wd, "mock_louper.bat"))
+    file.path(wd, "mock_louper.bat")
   } else {
-    return(file.path(wd, "mock_louper"))
+    file.path(wd, "mock_louper")
   }
 }

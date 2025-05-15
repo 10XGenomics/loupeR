@@ -180,21 +180,19 @@ validate_clusters <- function(clusters, barcode_count) { # nolint: cyclocomp_lin
 #' @export
 validate_projections <- function(projections, barcode_count) { # nolint: cyclocomp_linter.
   is_projection <- function(p) {
-    return(is.matrix(p))
+    is.matrix(p)
   }
 
   # should have dimensions barcodeCount x 2
   projection_dims_good <- function(p) {
     pdims <- dim(p)
-    return(pdims[[1]] == barcode_count && pdims[[2]] == 2)
+    pdims[[1]] == barcode_count && pdims[[2]] == 2
   }
 
   # no values should be NaN or Infinite
   projection_values_good <- function(p) {
-    return(
-      !any(is.nan(p)) &&
-        !any(is.infinite(p))
-    )
+    !any(is.nan(p)) &&
+      !any(is.infinite(p))
   }
 
   proj_names <- names(projections)

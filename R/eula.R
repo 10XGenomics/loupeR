@@ -86,5 +86,5 @@ auto_accepted_eula <- function() {
   value <- Sys.getenv(AUTO_ACCEPT_ENV_VAR, unset = "false")
   value <- trimws(tolower(value))
 
-  return(value %in% c("t", "true", "y", "yes"))
+  value %in% c("t", "true", "y", "yes")
 }

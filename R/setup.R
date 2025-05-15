@@ -166,9 +166,9 @@ bundled_executable_path <- function() {
 
 executable_basename <- function() {
   if (get_system_os() == "windows") {
-    return("louper.exe")
+    "louper.exe"
   } else {
-    return("louper")
+    "louper"
   }
 }
 
@@ -195,10 +195,10 @@ get_artifact <- function() {
   os <- get_system_os()
 
   if (os == "windows") {
-    return(artifacts$windows)
+    artifacts$windows
   } else if (os == "mac") {
-    return(artifacts$mac)
+    artifacts$mac
   } else {
-    return(artifacts$linux)
+    artifacts$linux
   }
 }
