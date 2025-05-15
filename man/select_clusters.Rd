@@ -4,12 +4,14 @@
 \alias{select_clusters}
 \title{Select clusters from the assay}
 \usage{
-select_clusters(obj, dedup = FALSE)
+select_clusters(obj, dedup = FALSE, metadata_cols = NULL)
 }
 \arguments{
 \item{obj}{A Seurat Object}
 
 \item{dedup}{logical to dedupicate clusters.  Default TRUE.}
+
+\item{metadata_cols}{optional list that specifies which metadata columns to retain when selecting clusters}
 }
 \value{
 A list of factors

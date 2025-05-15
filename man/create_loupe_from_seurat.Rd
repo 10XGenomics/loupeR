@@ -8,6 +8,7 @@ create_loupe_from_seurat(
   obj,
   output_dir = NULL,
   output_name = NULL,
+  metadata_cols = NULL,
   dedup_clusters = FALSE,
   feature_ids = NULL,
   executable_path = NULL,
@@ -20,6 +21,8 @@ create_loupe_from_seurat(
 \item{output_dir}{optional directory where the Loupe file will be written}
 
 \item{output_name}{optional name of the Loupe file with the extensions not included.}
+
+\item{metadata_cols}{optional list that specifies which metadata columns to retain when selecting clusters}
 
 \item{dedup_clusters}{optional logical that will try to deduplicate all clusters that are numerically the same}
 
