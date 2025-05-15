@@ -65,6 +65,30 @@ test_that("select_clusters selects meta.data factors with deduplication", {
   expect_equal(clusters[[2]], cell_types)
 })
 
+test_that("select_clusters selects only some meta.data factors", {
+  rna <- create_count_mat(4, 4)
+  obj <- Seurat::CreateSeuratObject(rna, assay = "rna")
+
+  cell_types1 <- factor(c("a1", "a3", "a2", "a2"), levels = c("a1", "a2", "a3"))
+  obj@meta.data["cell_types1"] <- cell_types1
+
+  cell_types2 <- factor(c("b1", "b3", "b2", "b2"), levels = c("b1", "b2", "b3"))
+  obj@meta.data["cell_types2"] <- cell_types2
+
+  clusters <- select_clusters(obj, metadata_cols = c("cell_types1"))
+  expect_length(clusters, 2)
+  expect_equal(clusters[[2]], cell_types1)
+
+  clusters <- select_clusters(obj, metadata_cols = c("cell_types2"))
+  expect_length(clusters, 2)
+  expect_equal(clusters[[2]], cell_types2)
+
+  clusters <- select_clusters(obj, metadata_cols = c("cell_types1", "cell_types2"))
+  expect_length(clusters, 3)
+  expect_equal(clusters[[2]], cell_types1)
+  expect_equal(clusters[[3]], cell_types2)
+})
+
 test_that("select_projections select reductions", {
   rna <- create_count_mat(1000, 100)
   obj <- Seurat::CreateSeuratObject(rna, assay = "rna")
