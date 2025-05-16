@@ -15,8 +15,8 @@
 #'
 #' @export
 validate_count_mat <- function(count_mat, feature_ids = NULL) { # nolint: cyclocomp_linter.
-  if (!is(count_mat, "dgCMatrix")) {
-    return(err("count_mat must be a dgCMatrix"))
+  if (!is(count_mat, "dgCMatrix") & !inherits(count_mat, "IterableMatrix")) {
+    return(err("count_mat must be a dgCMatrix or IterableMatrix"))
   }
 
   features <- rownames(count_mat)
@@ -34,11 +34,13 @@ validate_count_mat <- function(count_mat, feature_ids = NULL) { # nolint: cycloc
   if (length(barcodes) == 0) {
     return(err("count_mat must have at least one barcode"))
   }
-  if (any(is.nan(count_mat@x))) {
-    return(err("matrix values must not be NaN"))
-  }
-  if (any(is.infinite(count_mat@x))) {
-    return(err("matrix values must not be infinite"))
+  if (inherits(count_mat, "dgCMatrix")) {
+    if (any(is.nan(count_mat@x))) {
+      return(err("matrix values must not be NaN"))
+    }
+    if (any(is.infinite(count_mat@x))) {
+      return(err("matrix values must not be infinite"))
+    }
   }
   if (!all(sapply(barcodes, nzchar))) {
     return(err("barcodes cannot be the empty string"))

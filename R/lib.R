@@ -131,14 +131,25 @@ create_loupe <- function(
 
   h5path <- sprintf("%s.h5", tempfile())
   log_msg("creating temporary hdf5 file:", h5path)
-  ok <- create_hdf5(
-    count_mat,
-    clusters,
-    projections,
-    h5path,
-    feature_ids,
-    seurat_obj_version
-  )
+  if (inherits(count_mat, "IterableMatrix")) {
+    ok <- create_hdf5_BPCells(
+      count_mat,
+      clusters,
+      projections,
+      h5path,
+      feature_ids,
+      seurat_obj_version
+    )
+  } else {
+    ok <- create_hdf5(
+      count_mat,
+      clusters,
+      projections,
+      h5path,
+      feature_ids,
+      seurat_obj_version
+    )
+  }
   if (!ok$success) {
     stop(general_err(ok$msg, "creating the temporary hdf5 file"))
   }

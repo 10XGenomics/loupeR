@@ -39,6 +39,77 @@ create_hdf5 <- function(
   SUCCESS
 }
 
+#' Create an hdf5 interchange file with BPCells
+#'
+#' @param count_mat An \code{IterableMatrix} generated from \pkg{BPCells}. Rows
+#' are features, Columns are barcodes.
+#' @param clusters list of factors that hold information for each barcode
+#' @param projections list of matrices, all with dimensions (barcodeCount x 2)
+#' @param h5path path to h5 file
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
+#' @param seurat_obj_version optional string that holds the Seurat Object version.
+#'   It is useful for debugging compatibility issues.
+#'
+#' @importFrom hdf5r H5File
+#'
+#' @return TRUE on success, FALSE on error
+#'
+#' @details
+#' Run \code{remotes::install_github('bnprks/BPCells/r')} to install \pkg{BPCells},
+#' otherwise this function will raise an error.
+#'
+#' @export
+create_hdf5_BPCells <- function(
+    count_mat,
+    clusters,
+    projections,
+    h5path,
+    feature_ids,
+    seurat_obj_version) {
+  if (!requireNamespace("BPCells", quietly = TRUE)) {
+    stop(
+      "Please install 'BPCells' to write IterableMatrix:\n",
+      " remotes::install_github('bnprks/BPCells/r')"
+    )
+  }
+  if (file.exists(h5path)) {
+    return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
+  }
+  features <- rownames(count_mat)
+  barcodes <- colnames(count_mat)
+  if (length(feature_ids) == 0) {
+    feature_ids <- rownames(count_mat)
+  }
+  if (!BPCells::matrix_type(count_mat) == "uint32_t") {
+    count_mat <- BPCells::convert_matrix_type(count_mat)
+  }
+  count_mat <- BPCells::write_matrix_10x_hdf5(count_mat, path = h5path)
+
+  f <- hdf5r::H5File$new(h5path, mode = "r+")
+
+  matrix_group <- f$open("matrix")
+  hdf5r::h5unlink(matrix_group, "features")
+  hdf5r::h5unlink(matrix_group, "barcodes")
+
+  create_str_dataset(matrix_group, "barcodes", barcodes)
+  features_group <- matrix_group$create_group("features")
+
+  create_str_dataset(features_group, "name", features)
+  create_str_dataset(features_group, "id", as.character(feature_ids))
+  create_str_dataset(features_group, "feature_type", rep("Gene Expression", length(features)))
+  create_str_dataset(features_group, "_all_tag_keys", as.character()) # required features
+  features_group$close()
+  matrix_group$close()
+
+  write_clusters(f, clusters)
+  write_projections(f, projections)
+  write_metadata(f, seurat_obj_version)
+  f$close()
+
+  SUCCESS
+}
+
 #' Writes the matrix to the H5 file
 #'
 #' @param f An open H5File
