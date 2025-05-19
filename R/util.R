@@ -95,18 +95,26 @@ counts_matrix_from_assay <- function(assay) {
 #'
 #' @param obj A Seurat Object
 #' @param dedup logical to dedupicate clusters.  Default TRUE.
+#' @param metadata_cols optional list that specifies which metadata columns to retain when selecting clusters
 #'
 #' @return A list of factors
 #'
 #' @importFrom Seurat Idents
 #'
 #' @export
-select_clusters <- function(obj, dedup = FALSE) {
+select_clusters <- function(
+    obj,
+    dedup = FALSE,
+    metadata_cols = NULL) {
   # Use the active.ident as a cluster
   clusters <- list(active_cluster = Seurat::Idents(obj))
 
   # Use all factors and character vectors from meta.data
   for (name in names(obj@meta.data)) {
+    if (!is.null(metadata_cols) && !(name %in% metadata_cols)) {
+      next
+    }
+
     data <- obj@meta.data[[name]]
 
     if (is.factor(data)) {

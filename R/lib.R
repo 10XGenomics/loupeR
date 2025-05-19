@@ -7,6 +7,7 @@
 #' @param obj A Seurat Object
 #' @param output_dir optional directory where the Loupe file will be written
 #' @param output_name optional name of the Loupe file with the extensions not included.
+#' @param metadata_cols optional list that specifies which metadata columns to retain when selecting clusters
 #' @param dedup_clusters optional logical that will try to deduplicate all clusters that are numerically the same
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
 #'   Typically, these are the ensemble ids.
@@ -22,6 +23,7 @@ create_loupe_from_seurat <- function(
     obj,
     output_dir = NULL,
     output_name = NULL,
+    metadata_cols = NULL,
     dedup_clusters = FALSE,
     feature_ids = NULL,
     executable_path = NULL,
@@ -46,7 +48,7 @@ create_loupe_from_seurat <- function(
   assay <- named_assay[[1]]
   counts <- counts_matrix_from_assay(assay)
 
-  clusters <- select_clusters(obj, dedup = dedup_clusters)
+  clusters <- select_clusters(obj, dedup = dedup_clusters, metadata_cols = metadata_cols)
   projections <- select_projections(obj)
 
   log_msg("selected assay:", assay_name)
