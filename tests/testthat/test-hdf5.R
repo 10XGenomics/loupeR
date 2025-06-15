@@ -52,6 +52,8 @@ test_that("can create hdf5", {
 })
 
 test_that("can create hdf5 with BPCells", {
+  skip_if_not_installed("BPCells")
+
   barcode_count <- 5
   proj <- create_dense_mat(barcode_count, 2)
   count_mat <- create_count_mat_BPCells(100, barcode_count)
@@ -62,7 +64,7 @@ test_that("can create hdf5 with BPCells", {
   h5path <- sprintf("%s.h5", tempfile())
 
   seurat_obj_version <- "1.2.3"
-  create_hdf5_BPCells(count_mat, clusters, projections, h5path, feature_ids, seurat_obj_version)
+  create_hdf5(count_mat, clusters, projections, h5path, feature_ids, seurat_obj_version)
 
   count_mat <- as(count_mat, "dgCMatrix")
   f <- hdf5r::h5file(h5path)
