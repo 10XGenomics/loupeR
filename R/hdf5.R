@@ -82,6 +82,18 @@ write_mat <- function(f, count_mat, feature_ids) {
   features_group$close()
 }
 
+#' Writes BPCells matrix to the H5 file
+#'
+#' @param h5path Path to a new H5 file
+#' @param count_mat A sparse matrix inheriting from \code{IterableMatrix} from \pkg{BPCells}.
+#'   Rows are features, Columns are barcodes.
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
+#'
+#' @note
+#' This function will check whether \pkg{BPCells} is installed.
+#'
+#' @noRd
 write_mat_bpcells <- function(h5path, count_mat, feature_ids) {
   if (!requireNamespace("BPCells", quietly = TRUE)) {
     stop(
