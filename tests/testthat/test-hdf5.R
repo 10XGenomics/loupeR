@@ -56,7 +56,7 @@ test_that("can create hdf5 with BPCells", {
 
   barcode_count <- 5
   proj <- create_dense_mat(barcode_count, 2)
-  count_mat <- create_count_mat_BPCells(100, barcode_count)
+  count_mat <- create_count_mat_bpcells(100, barcode_count)
   feature_ids <- paste0("Add_", rownames(count_mat))
 
   clusters <- list("f1" = factor(c("a", "c", "b", "a", "b"), levels = c("a", "b", "c"), ordered = TRUE))

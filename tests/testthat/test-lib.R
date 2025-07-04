@@ -61,7 +61,7 @@ test_that("can run create_loupe", {
 
 test_that("can run create_loupe with BPCells", {
   barcode_count <- 5
-  count_mat <- create_count_mat_BPCells(100, barcode_count, valid_barcodes = TRUE)
+  count_mat <- create_count_mat_bpcells(100, barcode_count, valid_barcodes = TRUE)
   proj <- create_dense_mat(barcode_count, 2)
   projections <- list("p1" = proj)
 

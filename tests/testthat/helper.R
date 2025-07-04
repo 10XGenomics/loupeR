@@ -30,7 +30,7 @@ create_count_mat <- function(rows, cols, valid_barcodes = FALSE) {
 #' Create a sparse count_mat with BPCells
 #'
 #' @importFrom Matrix rsparsematrix
-create_count_mat_BPCells <- function(rows, cols, valid_barcodes = FALSE) {
+create_count_mat_bpcells <- function(rows, cols, valid_barcodes = FALSE) {
   mat <- Matrix::rsparsematrix(rows, cols, 0.5, rand.x = function(n) as.integer(100 * runif(n)))
 
   rownames <- as.character()

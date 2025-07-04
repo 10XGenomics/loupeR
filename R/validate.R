@@ -15,7 +15,7 @@
 #'
 #' @export
 validate_count_mat <- function(count_mat, feature_ids = NULL) { # nolint: cyclocomp_linter.
-  if (!is(count_mat, "dgCMatrix") & !inherits(count_mat, "IterableMatrix")) {
+  if (!is(count_mat, "dgCMatrix") && !inherits(count_mat, "IterableMatrix")) {
     return(err("count_mat must be a dgCMatrix or IterableMatrix"))
   }
 

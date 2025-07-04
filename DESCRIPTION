@@ -19,6 +19,8 @@ Suggests:
     Matrix,
     SeuratObject (>= 5.0.0),
     BPCells
+Remotes:
+    github::bnprks/BPCells/r
 Config/testthat/edition: 3
 Imports:
     methods,
