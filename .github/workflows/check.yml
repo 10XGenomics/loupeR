@@ -35,17 +35,11 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      # This seems to be required with install BPCells on mac and linux
-      # Otherwise we are seeing errors when untaring the source
-      - name: Clean pak cache
-        run: |
-          R -e 'pak::pak_cleanup()'
-        shell: bash
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          cache-version: 1
 
       - uses: r-lib/actions/check-r-package@v2
         with:
