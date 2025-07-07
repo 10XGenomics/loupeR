@@ -25,11 +25,14 @@ create_hdf5 <- function(
   if (file.exists(h5path)) {
     return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
   }
-
-  # create hdf5 file and matrix groups
-  f <- hdf5r::H5File$new(h5path, mode = "w")
-
-  write_mat(f, count_mat, feature_ids)
+  if (inherits(count_mat, "IterableMatrix")) {
+    write_mat_bpcells(h5path, count_mat, feature_ids)
+    f <- hdf5r::H5File$new(h5path, mode = "r+")
+  } else {
+    # create hdf5 file and matrix groups
+    f <- hdf5r::H5File$new(h5path, mode = "w")
+    write_mat(f, count_mat, feature_ids)
+  }
   write_clusters(f, clusters)
   write_projections(f, projections)
   write_metadata(f, seurat_obj_version)
@@ -78,6 +81,56 @@ write_mat <- function(f, count_mat, feature_ids) {
 
   features_group$close()
 }
+
+#' Writes BPCells matrix to the H5 file
+#'
+#' @param h5path Path to a new H5 file
+#' @param count_mat A sparse matrix inheriting from \code{IterableMatrix} from \pkg{BPCells}.
+#'   Rows are features, Columns are barcodes.
+#' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the ensemble ids.
+#'
+#' @note
+#' This function will check whether \pkg{BPCells} is installed.
+#'
+#' @noRd
+write_mat_bpcells <- function(h5path, count_mat, feature_ids) {
+  if (!requireNamespace("BPCells", quietly = TRUE)) {
+    stop(
+      "Please install 'BPCells' to write IterableMatrix:\n",
+      " remotes::install_github('bnprks/BPCells/r')"
+    )
+  }
+  features <- rownames(count_mat)
+  barcodes <- colnames(count_mat)
+  if (length(feature_ids) == 0) {
+    feature_ids <- rownames(count_mat)
+  }
+  if (!BPCells::matrix_type(count_mat) == "uint32_t") {
+    count_mat <- BPCells::convert_matrix_type(count_mat)
+  }
+  count_mat <- BPCells::write_matrix_10x_hdf5(count_mat, path = h5path)
+
+  # Need to rewrite the barcodes and features to use strings with max length
+  f <- hdf5r::H5File$new(h5path, mode = "r+")
+
+  matrix_group <- f$open("matrix")
+  hdf5r::h5unlink(matrix_group, "features")
+  hdf5r::h5unlink(matrix_group, "barcodes")
+
+  create_str_dataset(matrix_group, "barcodes", barcodes)
+  features_group <- matrix_group$create_group("features")
+
+  create_str_dataset(features_group, "name", features)
+  create_str_dataset(features_group, "id", as.character(feature_ids))
+  create_str_dataset(features_group, "feature_type", rep("Gene Expression", length(features)))
+  create_str_dataset(features_group, "_all_tag_keys", as.character()) # required features
+  features_group$close()
+  matrix_group$close()
+
+  f$close_all() # make sure everything closed
+}
+
 
 #' Prints the metadata list to stdout.
 #'
