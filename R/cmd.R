@@ -59,8 +59,8 @@ louper_create_cloupe <- function(
   status <- system2(command = executable_path, args = args)
 
   if (status == 0) {
-    return(SUCCESS)
+    SUCCESS
   } else {
-    return(err(sprintf("Louper executable failed: status code %d", status)))
+    err(sprintf("Louper executable failed: status code %d", status))
   }
 }
