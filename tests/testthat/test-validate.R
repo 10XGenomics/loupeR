@@ -342,4 +342,25 @@ test_that("validate_barcodes checks barcodes for proper formatting", {
   expect_false(validate_barcodes("ffkpbabq-10000")$success)
   expect_false(validate_barcodes("abcs_ffkpbaba-1xyz")$success)
   expect_false(validate_barcodes("affkpbaba-1")$success)
+
+  # loupe cell ids
+  expect_true(validate_barcodes("cellid_000000001")$success)
+  expect_true(validate_barcodes("cellid_000000001-1")$success)
+  expect_true(validate_barcodes("cellid_000000001_")$success)
+
+  expect_true(validate_barcodes("cellid_000000001-1_")$success)
+  expect_true(validate_barcodes("_cellid_000000001")$success)
+  expect_true(validate_barcodes("_cellid_000000001-1")$success)
+  expect_true(validate_barcodes("_cellid_000000001_")$success)
+  expect_true(validate_barcodes("_cellid_000000001-1_")$success)
+  expect_true(validate_barcodes("cellid_000000001-1:")$success)
+  expect_true(validate_barcodes(":cellid_000000001")$success)
+  expect_true(validate_barcodes(":cellid_000000001-1")$success)
+  expect_true(validate_barcodes(":cellid_000000001:")$success)
+  expect_true(validate_barcodes(":cellid_000000001-1:")$success)
+
+  expect_true(validate_barcodes("abc_cellid_000000001_abc")$success)
+  expect_true(validate_barcodes("abc_cellid_000000001-1_abc")$success)
+  expect_true(validate_barcodes("abc:cellid_000000001:abc")$success)
+  expect_true(validate_barcodes("abc:cellid_000000001-1:abc")$success)
 })
