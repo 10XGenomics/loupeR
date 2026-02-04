@@ -99,6 +99,8 @@ validate_barcodes <- function(barcodes) { # nolint: cyclocomp_linter.
   visium_hd_regex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})([:_].*)?$"
   visium_hd_gem_regex <- "^(.*[:_])?(s_\\d{3}um_\\d{5}_\\d{5})-(\\d+)([:_].*)?$"
   xenium_cell_id_regex <- "^(.*[:_])?([a-p]{1,8})-(\\d+)([:_].*)?$"
+  loupe_cell_barcode_regex <- "^(.*[:_])?(cellid_\\d{9})([:_].*)?$"
+  loupe_cell_barcode_gem_regex <- "^(.*[:_])?(cellid_\\d{9})-(\\d+)([:_].*)?$"
 
   for (barcode in barcodes) {
     if (
@@ -106,7 +108,9 @@ validate_barcodes <- function(barcodes) { # nolint: cyclocomp_linter.
         !grepl(barcode_gem_regex, barcode) &&
         !grepl(visium_hd_regex, barcode) &&
         !grepl(visium_hd_gem_regex, barcode) &&
-        !grepl(xenium_cell_id_regex, barcode)
+        !grepl(xenium_cell_id_regex, barcode) &&
+        !grepl(loupe_cell_barcode_regex, barcode) &&
+        !grepl(loupe_cell_barcode_gem_regex, barcode)
     ) {
       return(err(paste("Invalid barcode:", barcode)))
     }
