@@ -176,16 +176,16 @@ executable_basename <- function() {
 #' @noRd
 artifacts <- list(
   linux = list(
-    url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.4/louper-linux-x64",
-    md5 = "b3fd93fd88a43fbcf3f6e40af3186eaa"
+    url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.5/louper-linux-x64",
+    md5 = "65e10560f91fec85a762df2e8b529fa8"
   ),
   mac = list(
-    url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.4/louper-macos-x64",
-    md5 = "ea65a2ec372d623c54d45c51793014e2"
+    url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.5/louper-macos-x64",
+    md5 = "b54b72c20a5eadd087ad44550e8c66f9"
   ),
   windows = list(
-    url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.4/louper-windows-x64.exe",
-    md5 = "f5d1e99138e840169a19191d10bb25ab"
+    url = "https://github.com/10XGenomics/loupeR/releases/download/v1.1.5/louper-windows-x64.exe",
+    md5 = "58b6b9fe3dadc3610580d95d07119fb3"
   )
 )
 
