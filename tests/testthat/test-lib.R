@@ -18,6 +18,16 @@ setup({
   eula()
 })
 
+test_that("error helpers format messages correctly", {
+  general <- general_err("status code 1", "creating the loupe file")
+  validation <- validation_err("bad barcodes", "count matrix")
+
+  expect_match(general, "issue with creating the loupe file", fixed = TRUE)
+  expect_match(general, "status code 1", fixed = TRUE)
+  expect_match(validation, "formatting of your count matrix", fixed = TRUE)
+  expect_match(validation, "bad barcodes", fixed = TRUE)
+})
+
 test_that("can run create_loupe_from_seurat", {
   obj <- create_default_seurat_obj()
   x <- create_loupe_from_seurat(obj, executable_path = get_executable_path())
