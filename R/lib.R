@@ -11,6 +11,8 @@
 #' @param dedup_clusters optional logical that will try to deduplicate all clusters that are numerically the same
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
 #'   Typically, these are the ensemble ids.
+#' @param feature_names optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the gene symbols.
 #' @param executable_path optional path to the louper executable.
 #' @param force optional logical as to whether we should overwrite an already existing file
 #'
@@ -26,6 +28,7 @@ create_loupe_from_seurat <- function(
     metadata_cols = NULL,
     dedup_clusters = FALSE,
     feature_ids = NULL,
+    feature_names = NULL,
     executable_path = NULL,
     force = FALSE) {
   v <- needs_setup(executable_path)
@@ -67,6 +70,7 @@ create_loupe_from_seurat <- function(
     output_dir = output_dir,
     output_name = output_name,
     feature_ids = feature_ids,
+    feature_names = feature_names,
     executable_path = executable_path,
     force = force,
     seurat_obj_version = seurat_obj_version
@@ -85,6 +89,8 @@ create_loupe_from_seurat <- function(
 #' @param output_name optional name of the Loupe file with the extensions not included.
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
 #'   Typically, these are the ensemble ids.
+#' @param feature_names optional character vector that specifies the feature ids of the count matrix.
+#'   Typically, these are the gene symbols
 #' @param executable_path optional path to the louper executable.
 #' @param force optional logical as to whether we should overwrite an already existing file
 #' @param seurat_obj_version optional string that holds the Seurat Object version.
@@ -102,6 +108,7 @@ create_loupe <- function(
     output_dir = NULL,
     output_name = NULL,
     feature_ids = NULL,
+    feature_names = NULL,
     executable_path = NULL,
     force = FALSE,
     seurat_obj_version = NULL) {
@@ -139,6 +146,7 @@ create_loupe <- function(
     projections,
     h5path,
     feature_ids,
+    feature_names,
     seurat_obj_version
   )
   if (!ok$success) {

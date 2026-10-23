@@ -7,6 +7,8 @@
 #' @param h5path path to h5 file
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
 #'   Typically, these are the ensemble ids.
+#' @param feature_names optional character vector that specifies the feature names of the count matrix.
+#'   Typically, these are the gene symbols
 #' @param seurat_obj_version optional string that holds the Seurat Object version.
 #'   It is useful for debugging compatibility issues.
 #'
@@ -21,6 +23,7 @@ create_hdf5 <- function(
     projections,
     h5path,
     feature_ids,
+    feature_names,
     seurat_obj_version) {
   if (file.exists(h5path)) {
     return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
@@ -31,7 +34,7 @@ create_hdf5 <- function(
   } else {
     # create hdf5 file and matrix groups
     f <- hdf5r::H5File$new(h5path, mode = "w")
-    write_mat(f, count_mat, feature_ids)
+    write_mat(f, count_mat, feature_ids, feature_names)
   }
   write_clusters(f, clusters)
   write_projections(f, projections)
@@ -48,10 +51,12 @@ create_hdf5 <- function(
 #' @param count_mat A sparse dgCMatrix as is generated via Matrix::rsparsematrix.
 #'   Rows are features, Columns are barcodes.
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
-#'   Typically, these are the ensemble ids.
+#'   Typically, these are the ensemble IDs.
+#' @param feature_names optional character vector that specifies the feature names of the count matrix.
+#'   Typically, these are the gene symbols.
 #'
 #' @noRd
-write_mat <- function(f, count_mat, feature_ids) {
+write_mat <- function(f, count_mat, feature_ids=NULL, feature_names=NULL) {
   features <- rownames(count_mat)
   barcodes <- colnames(count_mat)
   feature_count <- length(features)
@@ -69,12 +74,21 @@ write_mat <- function(f, count_mat, feature_ids) {
   matrix_group$close()
 
   if (is.null(feature_ids)) {
-    feature_ids <- lapply(seq_along(features), function(x) {
-      sprintf("feature_%d", x)
-    })
+    # Check if the current feature IDs have any duplicates.
+    if ( sum(table(features) > 1 ) > 0 ) {
+      feature_ids <- lapply(seq_along(features), function(x) {
+        sprintf("feature_%d", x)
+      })
+    } else {
+      feature_ids <- features
+    }
   }
 
-  create_str_dataset(features_group, "name", features)
+  if ( is.null(feature_names) ) {
+    feature_names <- features
+  }
+
+  create_str_dataset(features_group, "name", feature_names)
   create_str_dataset(features_group, "id", as.character(feature_ids))
   create_str_dataset(features_group, "feature_type", rep("Gene Expression", length(features)))
   create_str_dataset(features_group, "_all_tag_keys", as.character()) # required features

@@ -10,6 +10,7 @@ create_hdf5(
   projections,
   h5path,
   feature_ids,
+  feature_names,
   seurat_obj_version
 )
 }
@@ -25,6 +26,9 @@ Rows are features, Columns are barcodes.}
 
 \item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.
 Typically, these are the ensemble ids.}
+
+\item{feature_names}{optional character vector that specifies the feature names of the count matrix.
+Typically, these are the gene symbols}
 
 \item{seurat_obj_version}{optional string that holds the Seurat Object version.
 It is useful for debugging compatibility issues.}
