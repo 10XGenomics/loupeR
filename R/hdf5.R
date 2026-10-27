@@ -23,13 +23,13 @@ create_hdf5 <- function(
     projections,
     h5path,
     feature_ids,
-    feature_names,
+    feature_names = NULL,
     seurat_obj_version) {
   if (file.exists(h5path)) {
     return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
   }
   if (inherits(count_mat, "IterableMatrix")) {
-    write_mat_bpcells(h5path, count_mat, feature_ids)
+    write_mat_bpcells(h5path, count_mat, feature_ids, feature_names)
     f <- hdf5r::H5File$new(h5path, mode = "r+")
   } else {
     # create hdf5 file and matrix groups
@@ -74,17 +74,12 @@ write_mat <- function(f, count_mat, feature_ids=NULL, feature_names=NULL) {
   matrix_group$close()
 
   if (is.null(feature_ids)) {
-    # Check if the current feature IDs have any duplicates.
-    if ( sum(table(features) > 1 ) > 0 ) {
-      feature_ids <- lapply(seq_along(features), function(x) {
-        sprintf("feature_%d", x)
-      })
-    } else {
-      feature_ids <- features
-    }
+    feature_ids <- lapply(seq_along(features), function(x) {
+      sprintf("feature_%d", x)
+    })
   }
 
-  if ( is.null(feature_names) ) {
+  if (is.null(feature_names)) {
     feature_names <- features
   }
 
@@ -103,12 +98,14 @@ write_mat <- function(f, count_mat, feature_ids=NULL, feature_names=NULL) {
 #'   Rows are features, Columns are barcodes.
 #' @param feature_ids optional character vector that specifies the feature ids of the count matrix.
 #'   Typically, these are the ensemble ids.
+#' @param feature_names optional character vector that specifies the feature names of the count matrix.
+#'   Typically, these are the gene symbols.
 #'
 #' @note
 #' This function will check whether \pkg{BPCells} is installed.
 #'
 #' @noRd
-write_mat_bpcells <- function(h5path, count_mat, feature_ids) {
+write_mat_bpcells <- function(h5path, count_mat, feature_ids, feature_names = NULL) {
   if (!requireNamespace("BPCells", quietly = TRUE)) {
     stop(
       "Please install 'BPCells' to write IterableMatrix:\n",
@@ -132,10 +129,14 @@ write_mat_bpcells <- function(h5path, count_mat, feature_ids) {
   hdf5r::h5unlink(matrix_group, "features")
   hdf5r::h5unlink(matrix_group, "barcodes")
 
+  if (is.null(feature_names)) {
+    feature_names <- features
+  }
+
   create_str_dataset(matrix_group, "barcodes", barcodes)
   features_group <- matrix_group$create_group("features")
 
-  create_str_dataset(features_group, "name", features)
+  create_str_dataset(features_group, "name", feature_names)
   create_str_dataset(features_group, "id", as.character(feature_ids))
   create_str_dataset(features_group, "feature_type", rep("Gene Expression", length(features)))
   create_str_dataset(features_group, "_all_tag_keys", as.character()) # required features

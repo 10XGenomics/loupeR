@@ -10,7 +10,7 @@ create_hdf5(
   projections,
   h5path,
   feature_ids,
-  feature_names,
+  feature_names = NULL,
   seurat_obj_version
 )
 }
