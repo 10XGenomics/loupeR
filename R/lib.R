@@ -22,15 +22,15 @@
 #'
 #' @export
 create_loupe_from_seurat <- function(
-    obj,
-    output_dir = NULL,
-    output_name = NULL,
-    metadata_cols = NULL,
-    dedup_clusters = FALSE,
-    feature_ids = NULL,
-    feature_names = NULL,
-    executable_path = NULL,
-    force = FALSE) {
+  obj,
+  output_dir = NULL,
+  output_name = NULL,
+  metadata_cols = NULL,
+  dedup_clusters = FALSE,
+  feature_ids = NULL,
+  feature_names = NULL,
+  executable_path = NULL,
+  force = FALSE) {
   v <- needs_setup(executable_path)
   if (!v$success) {
     stop(v$msg)
@@ -102,16 +102,16 @@ create_loupe_from_seurat <- function(
 #'
 #' @export
 create_loupe <- function(
-    count_mat,
-    clusters = list(),
-    projections = list(),
-    output_dir = NULL,
-    output_name = NULL,
-    feature_ids = NULL,
-    feature_names = NULL,
-    executable_path = NULL,
-    force = FALSE,
-    seurat_obj_version = NULL) {
+  count_mat,
+  clusters = list(),
+  projections = list(),
+  output_dir = NULL,
+  output_name = NULL,
+  feature_ids = NULL,
+  feature_names = NULL,
+  executable_path = NULL,
+  force = FALSE,
+  seurat_obj_version = NULL) {
   v <- needs_setup(executable_path)
   if (!v$success) {
     stop(v$msg)

@@ -18,13 +18,13 @@
 #'
 #' @export
 create_hdf5 <- function(
-    count_mat,
-    clusters,
-    projections,
-    h5path,
-    feature_ids,
-    feature_names = NULL,
-    seurat_obj_version) {
+  count_mat,
+  clusters,
+  projections,
+  h5path,
+  feature_ids,
+  feature_names = NULL,
+  seurat_obj_version) {
   if (file.exists(h5path)) {
     return(err(sprintf("cannot create h5 file as it already exists: %s", h5path)))
   }
@@ -56,7 +56,7 @@ create_hdf5 <- function(
 #'   Typically, these are the gene symbols.
 #'
 #' @noRd
-write_mat <- function(f, count_mat, feature_ids=NULL, feature_names=NULL) {
+write_mat <- function(f, count_mat, feature_ids = NULL, feature_names = NULL) {
   features <- rownames(count_mat)
   barcodes <- colnames(count_mat)
   feature_count <- length(features)

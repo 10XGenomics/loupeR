@@ -103,9 +103,9 @@ counts_matrix_from_assay <- function(assay) {
 #'
 #' @export
 select_clusters <- function(
-    obj,
-    dedup = FALSE,
-    metadata_cols = NULL) {
+  obj,
+  dedup = FALSE,
+  metadata_cols = NULL) {
   # Use the active.ident as a cluster
   clusters <- list(active_cluster = Seurat::Idents(obj))
 
