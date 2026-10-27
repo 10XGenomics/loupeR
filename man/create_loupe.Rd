@@ -11,6 +11,7 @@ create_loupe(
   output_dir = NULL,
   output_name = NULL,
   feature_ids = NULL,
+  feature_names = NULL,
   executable_path = NULL,
   force = FALSE,
   seurat_obj_version = NULL
@@ -30,6 +31,9 @@ Rows are features, Columns are barcodes.}
 
 \item{feature_ids}{optional character vector that specifies the feature ids of the count matrix.
 Typically, these are the ensemble ids.}
+
+\item{feature_names}{optional character vector that specifies the feature ids of the count matrix.
+Typically, these are the gene symbols}
 
 \item{executable_path}{optional path to the louper executable.}
 

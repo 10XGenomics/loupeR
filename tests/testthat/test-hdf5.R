@@ -8,7 +8,7 @@ test_that("can create hdf5", {
 
   seurat_obj_version <- "1.2.3"
   feature_ids <- NULL
-  create_hdf5(count_mat, clusters, projections, h5path, feature_ids, seurat_obj_version)
+  create_hdf5(count_mat, clusters, projections, h5path, feature_ids, NULL, seurat_obj_version)
 
   f <- hdf5r::h5file(h5path)
 
@@ -64,7 +64,7 @@ test_that("can create hdf5 with BPCells", {
   h5path <- sprintf("%s.h5", tempfile())
 
   seurat_obj_version <- "1.2.3"
-  create_hdf5(count_mat, clusters, projections, h5path, feature_ids, seurat_obj_version)
+  create_hdf5(count_mat, clusters, projections, h5path, feature_ids, NULL, seurat_obj_version)
 
   count_mat <- as(count_mat, "dgCMatrix")
   f <- hdf5r::h5file(h5path)
@@ -115,13 +115,55 @@ test_that("can create hdf5 custom feature ids", {
   seurat_obj_version <- "1.2.3"
   feature_ids <- c("one", "two", "three")
 
-  create_hdf5(count_mat, list(), list(), h5path, feature_ids, seurat_obj_version)
+  create_hdf5(count_mat, list(), list(), h5path, feature_ids, NULL, seurat_obj_version)
 
   f <- hdf5r::h5file(h5path)
 
   matrix_group <- hdf5r::openGroup(f, "matrix")
   features_group <- hdf5r::openGroup(matrix_group, "features")
   feature_ids_group <- hdf5r::openGroup(features_group, "id")
+  expect_equal(hdf5r::readDataSet(feature_ids_group), feature_ids)
+})
+
+test_that("can create hdf5 custom feature names", {
+  barcode_count <- 5
+  count_mat <- create_count_mat(3, barcode_count)
+  h5path <- sprintf("%s.h5", tempfile())
+  seurat_obj_version <- "1.2.3"
+  feature_ids <- c("ENSG1", "ENSG2", "ENSG3")
+  feature_names <- c("A", "GENE2", "TP53")
+
+  create_hdf5(count_mat, list(), list(), h5path, feature_ids, feature_names, seurat_obj_version)
+
+  f <- hdf5r::h5file(h5path)
+
+  matrix_group <- hdf5r::openGroup(f, "matrix")
+  features_group <- hdf5r::openGroup(matrix_group, "features")
+  feature_names_group <- hdf5r::openGroup(features_group, "name")
+  feature_ids_group <- hdf5r::openGroup(features_group, "id")
+  expect_equal(hdf5r::readDataSet(feature_names_group), feature_names)
+  expect_equal(hdf5r::readDataSet(feature_ids_group), feature_ids)
+})
+
+test_that("can create hdf5 custom feature names with BPCells", {
+  skip_if_not_installed("BPCells")
+
+  barcode_count <- 5
+  count_mat <- create_count_mat_bpcells(3, barcode_count)
+  h5path <- sprintf("%s.h5", tempfile())
+  seurat_obj_version <- "1.2.3"
+  feature_ids <- paste0("Add_", rownames(count_mat))
+  feature_names <- c("A", "GENE2", "TP53")
+
+  create_hdf5(count_mat, list(), list(), h5path, feature_ids, feature_names, seurat_obj_version)
+
+  f <- hdf5r::h5file(h5path)
+
+  matrix_group <- hdf5r::openGroup(f, "matrix")
+  features_group <- hdf5r::openGroup(matrix_group, "features")
+  feature_names_group <- hdf5r::openGroup(features_group, "name")
+  feature_ids_group <- hdf5r::openGroup(features_group, "id")
+  expect_equal(hdf5r::readDataSet(feature_names_group), feature_names)
   expect_equal(hdf5r::readDataSet(feature_ids_group), feature_ids)
 })
 
@@ -136,7 +178,7 @@ test_that("will cast integer projections to float", {
   proj <- matrix(as.integer(create_dense_mat(barcode_count, 2) * 10), nrow = barcode_count, ncol = 2)
   projections <- list("p1" = proj)
 
-  create_hdf5(count_mat, list(), projections, h5path, feature_ids, seurat_obj_version)
+  create_hdf5(count_mat, list(), projections, h5path, feature_ids, NULL, seurat_obj_version)
 
   f <- hdf5r::h5file(h5path)
 

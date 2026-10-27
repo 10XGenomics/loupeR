@@ -105,12 +105,12 @@ create_bugreport_from_seurat <- function(obj) {
 #'
 #' @export
 create_bugreport <- function(
-    count_mat,
-    clusters,
-    projections,
-    assay_name = NULL,
-    seurat_obj_version = NULL,
-    skip_metadata = FALSE) {
+  count_mat,
+  clusters,
+  projections,
+  assay_name = NULL,
+  seurat_obj_version = NULL,
+  skip_metadata = FALSE) {
   # metadata
   if (!skip_metadata) {
     cat("\nMetadata:\n\n")

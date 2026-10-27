@@ -10,11 +10,11 @@
 #'
 #' @noRd
 louper_create_cloupe <- function(
-    h5path,
-    output_dir = NULL,
-    output_name = NULL,
-    executable_path = NULL,
-    force = FALSE) {
+  h5path,
+  output_dir = NULL,
+  output_name = NULL,
+  executable_path = NULL,
+  force = FALSE) {
   # default loupe name to `converted.cloupe`
   if (is.null(output_name)) {
     output_name <- "converted"
